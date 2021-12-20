@@ -1,8 +1,8 @@
-# axelarate-community
-Tools to join the axelar network
+# axelarate-сообщество
+Инструменты для подключения к сети Axelar
 
-## Disclaimer
-Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+## Отказ от ответственности
+Сеть Axelar находится в стадии разработки. Ни в коем случае нельзя передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять. Axelar не несет ответственности за потерянные активы, или их заморозку или за токены которые не подлежат восстановлению в любом состоянии. Если Вы обнаружите проблему,пожалуйста, отправьте вопрос в этот репозиторий, следуя шаблону.
 
-## Get Started
-Visit [our website](https://axelardocs.vercel.app/) for instructions to join the network and complete exercises.
+## Начало работы
+Посетите [наш вебсайт](https://axelardocs.vercel.app/) для получения инструкций по подключению к сети и выполнению упражнений.
