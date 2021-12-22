@@ -1,27 +1,27 @@
 ---
-name: Bug report
-about: Create a report to help us improve
-title: ''
-labels: ''
-assignees: ''
+Имя: Отчёт об ошибке
+Заглавие: Создайте отчет, чтобы помочь нам стать лучше
+Заголовок: ''
+Заметки: ''
+Владелец: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+**Опишите ошибку**
+Четкое и краткое описание ошибки.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-***Example***
-1. Execute script ...
-2. Execute command `axelarcli... `
-3. See returned error ...
+**Как воспроизвести**
+Шаги по воспроизведению проблемы:
+***Пример***
+1. Запуск скрипта ...
+2. Выполнение команды `axelarcli... `
+3. Посмотреть какая ошибка возвращается ...
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+**Ожидаемое поведение**
+Четкое и краткое описание того, что Вы получили.
 
-**Screenshots/Log excerpts**
-If applicable, add screenshots or excerpts from the node log to help explain your problem.
+**Скриншоты/Отрывки из журнала событий**
+Если возможно, добавьте скриншоты или часть сообщений из журнала событий на Вашем сервере, чтобы объяснить Вашу проблему.
 
-**Additional context**
-Add any other context about the problem here.
+**Дополнительная информация**
+Добавьте сюда любую другую информацию о проблеме.
