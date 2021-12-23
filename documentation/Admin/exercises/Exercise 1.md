@@ -1,26 +1,26 @@
 ---
 id: e1
 sidebar_position: 1
-sidebar_label: Exercise 1
-slug: /exercises/e1
+sidebar_label: Упражнение 1
+slug: /упражнение/e1
 ---
-# Exercise 1
-Transfer BTC to Ethereum (as a wrapped asset) and back via Axelar Network CLI.
+# Упражнение 1
+Переведите BTC в Ethereum (как завёрнутый актив) и обратно через интерфейс командной строки Axelar Network.
 
-## Level
-Intermediate
+## Уровень
+Средний
 
-## Disclaimer
-:::warning
-Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+## Отказ от ответственности
+:::предупреждение
+Axelar Network находится в стадии разработки. Ни в коем случае нельзя передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять.Axelar не несет ответственности за потерянные активы, или их заморозку или за токены которые не подлежат восстановлению в любом состоянии. Если Вы обнаружите проблему,пожалуйста, сообщите о проблеме в этот репозиторий, следуя шаблону.
 :::
 
-## Prerequisites
-- Complete all steps from [Setup with Docker](/setup-docker) or [Setup with Binaries](/setup-binaries)
-- Have a Ethereum wallet setup with [MEW](https://www.myetherwallet.com/) and have an Ethereum address funded with some Ether (You can also choose to use the [Chrome plugin](https://chrome.google.com/webstore/detail/mew-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en))
+## Предварительные требования
+- Выполните все шаги из этого руководства [Установка при помощи Docker(a)](/setup-docker) или [Установка из исходного кода](/setup-binaries)
+- Установите кошелек Ethereum с использованием [MEW](https://www.myetherwallet.com/) и получите адрес Ethereum кошелька, которій будет финансироваться за счет эфира (Вы также можете использовать[Chrome плагин](https://chrome.google.com/webstore/detail/mew-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en))
 
-## Useful links
-- [Axelar faucet](http://faucet.testnet.axelar.dev/)
+## Полезные ссылки
+- [Axelar Кран](http://faucet.testnet.axelar.dev/)
 - Latest docker images:
   + https://hub.docker.com/repository/docker/axelarnet/axelar-core
   + https://hub.docker.com/repository/docker/axelarnet/tofnd
