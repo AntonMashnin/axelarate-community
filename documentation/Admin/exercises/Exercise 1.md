@@ -17,7 +17,7 @@ Axelar Network находится в стадии разработки. Ни в 
 
 ## Предварительные требования
 - Выполните все шаги из этого руководства [Установка при помощи Docker(a)](/setup-docker) или [Установка из исходного кода](/setup-binaries)
-- Установите кошелек Ethereum с использованием [MEW](https://www.myetherwallet.com/) и получите адрес Ethereum кошелька, который будет финансироваться за счет эфириума (Вы также можете использовать[Chrome плагин](https://chrome.google.com/webstore/detail/mew-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en))
+- Установите кошелек Ethereum с использованием [MEW](https://www.myetherwallet.com/) и получите адрес Ethereum кошелька, который будет финансироваться за счет эфириума (Вы также можете использовать [Chrome плагин](https://chrome.google.com/webstore/detail/mew-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en))
 
 ## Полезные ссылки
 - [Axelar Кран](http://faucet.testnet.axelar.dev/)
@@ -28,90 +28,90 @@ Axelar Network находится в стадии разработки. Ни в 
   + Для выполнения задания использовалась версия Axelar v0.7.6, будьте осторожны с потенциальными различиями в рабочем процессе
 - [Дополнительные команды](/extra-commands) для запроса состояния сети Axelar
 
-## What you need
-- Bitcoin testnet faucet to send some test BTC: https://testnet-faucet.mempool.co/
+## Что Вам понадобиться
+- Биткойн кран тестовой сети для отправки тестовых BTC:: https://testnet-faucet.mempool.co/
 - Metamask
-- Ethereum Ropsten address (generate via Metamask)
+- Ethereum Ropsten адрес (сгенерированный в Metamask)
 
 
-## Joining the Axelar testnet
+## Присоединитесь к тестовой сети Axelar
 
-Follow the instructions in [Setup with Docker](/setup-docker) or [Setup with Binaries](/setup-binaries) to make sure your node is up to date and you received some test coins to your validator account.
+Используйте руководство для [настройки среды с помощью Docker](/setup-docker) или [настройки из исходного кода](/setup-binaries) чтобы убедиться, что Ваш серве обновлен, и Вы получили несколько тестовых монет на свою учетную запись валидатора.
 
-## Instructions to mint and burn tokens
-These instructions are a step by step guide to run commands to move an asset from a source to a destination chain and back. The assets are minted as wrapped ERC-20 assets on the destination chain. The commands are submitted to the Axelar Network that's responsible for (a) generating deposit/withdrawal addresses, (b) routing and finalizing transactions, and (c) minting/burning the corresponding assets.
+## Инструкция создания и сжигание монет
+Эти инструкции представляют собой пошаговое руководство выполнения команд для перемещения актива из исходного места в сеть назначения и обратно. Активы создаются как завернутые активы ERC-20 в цепочке назначения. Команды отправляются в сеть Axelar Network, которая отвечает за (а) создания адресов ввода/вывода, (b) маршрутизацию и завершение транзакций, и (c) создание/сжигание соответствующих активов.
 
-To perform these tests, you'll need some test Bitcoins on the Bitcoin testnet, and a destination Ethereum address on the Ethereum Ropsten Testnet.
+Для выполнения этих тестов Вам понадобятся несколько тестовых биткойнов в тестовой сети Биткойн, и адрес получателя Ethereum в тестовой сети Ethereum Ropsten.
 
-### Mint ERC20 Bitcoin tokens on Ethereum
-
-1. Create a deposit address on Bitcoin (to which you'll deposit coins later)
+### Создание ERC20 Bitcoin монет на Ethereum
+  
+1. Создайте адрес депозита в биткойнах (на который, позже, Вы выполните отправку монет)
 
 ```bash
 axelard tx bitcoin link ethereum {ethereum Ropsten dst addr} --from validator
 -> returns bitcoin deposit address
 ```
 
-e.g.,
+т.е.,
 
 ```bash
 axelard tx bitcoin link ethereum 0xc1c0c8D2131cC866834C6382096EaDFEf1af2F52 --from validator
 ```
 
-Look for `successfully linked {bitcoin deposit address} and {ethereum Ropsten dst addr}`
+После этого Вы должны увидеть `successfully linked {bitcoin deposit address} and {ethereum Ropsten dst addr}`
 
-2. External: send some TEST BTC on Bitcoin testnet to the bitcoin deposit address specified above, and wait for 6 confirmations (i.e. the transaction is 6 blocks deep in the Bitcoin chain).
-- ALERT: DO NOT SEND ANY REAL ASSETS
-- You can use a bitcoin faucet such as https://bitcoinfaucet.uo1.net/ to send TEST BTC to the deposit address
-- You can monitor the status of your deposit using the testnet explorer: https://blockstream.info/testnet/
+2. Внешний: отправьте несколько ТЕСТОВЫХ BTC в тестовой сети Биткойн на адрес биткоин депозита, указанный выше, и дождитесь 6 подтверждений (в биткойн сети).
+- ВНИМАНИЕ: НЕ ОТПРАВЛЯЙТЕ РЕАЛЬНЫЕ АКТИВЫ
+- Вы можете использовать биткойн кран, например https://bitcoinfaucet.uo1.net/ отправить ТЕСТОВЫЙ BTC на адрес депозита
+- Вы можете следить за состоянием своего депозита с помощью проводника в тестовой сети: https://blockstream.info/testnet/
 
 
-3. Confirm the Bitcoin outpoint
+3. Подтвердите получение биткойна
 
 ```bash
 axelard tx bitcoin confirm-tx-out "{txID:vout}" "{amount}btc" "{deposit address}" --from validator
 ```
 
-e.g.,
+т.е.,
 
 ```bash
 axelard tx bitcoin confirm-tx-out 615df0b4d5053630d24bdd7661a13bea28af8bc1eb0e10068d39b4f4f9b6082d:0 0.00088btc tb1qlteveekr7u2qf8faa22gkde37epngsx9d7vgk98ujtzw77c27k7qk2qvup --from validator
 ```
 
-Wait for transaction to be confirmed (~10 Axelar blocks, ~50 secs).
-Eventually, you'll see something like this in the node terminal:
+Дождитесь подтверждения транзакции (~10 Axelar блоков, ~50 secs).
+В конце концов, вы увидите что-то вроде этого в консоли сервера:
 
 ```bash
 bitcoin outpoint confirmation result is
 ```
 
-You can search it using `docker logs -f axelar-core 2>&1 | grep -a -e outpoint`.
+Вы можете выполнить поиск с помощью `docker logs -f axelar-core 2>&1 | grep -a -e outpoint`.
 
-4. Trigger signing of the transfers to Ethereum. First create the pending transfers, then sign it.
+4. Подпись перевода в сеть Ethereum. Сначала создайте переводы которые находяться в ожидании, а затем подпишите их:
 
 ```bash
 axelard tx evm create-pending-transfers ethereum --from validator --gas auto --gas-adjustment 1.2 && axelard tx evm sign-commands ethereum --from validator --gas auto --gas-adjustment 1.2
 ```
-Look for `successfully started signing batched commands with ID {batched commands ID}` and wait for sign protocol to complete (~10 Axelar blocks).
+Вы должны увидеть `successfully started signing batched commands with ID {batched commands ID}` and wait for sign protocol to complete (~10 Axelar blocks).
 
-5. Get the command data that needs to be sent in an Ethereum transaction in order to execute the mint
+5. Получите вывод команды, которая должна быть отправлена для создания Ethereum транзакции
 
 ```bash
 axelard q evm batched-commands ethereum {batched commands ID from step 4}
 ```
-Look for the command data listed under `execute_data`. Copy and save it to use in the next step.
+Найдите вывод команды, в разделе `execute_data`. Скопируйте и сохраните его для использования на следующем шаге.
 
-6. Send the Ethereum transaction wrapping the command data to execute the mint
+6. Отправьте транзакцию Ethereum, обернув данные:
 
-Open your Metamask wallet, go to Settings -> Advanced, then find Show HEX data and enable that option. This way you can send a data transaction directly with the Metamask wallet. Keep in mind not to transfer any tokens, you just need to input the data from the above `execute_data` and send it to the Gateway smart contract (see [Testnet Release](/testnet-releases)). While doing this please make sure the gas price in Metamask is updated once you paste in the data.
+Откройте свой кошелек Metamask, зайдите в Настройки -> Дополнительно, затем найдите Показать данные HEX и включите эту опцию. Таким образом, вы можете отправить транзакцию с данными напрямую через кошелек Metamask. Помните, чтобы не передавать токены, вам просто нужно ввести данные из приведенного выше `execute_data` и отправить её используя шлюз смарт-контракта (см. [версию тестовой сети](/testnet-releases)). При этом убедитесь, что цена на газ в Metamask обновляется после того как Вы ввели данные.
 
-Alternatively you can open your MEW wallet, and navigate to the "Send Transaction" page, with the advanced options open, too. Now, you need to send a transaction to the Gateway smart contract with **0** Ether, and with data field being the command data you retrieved in the previous step. Your screen should look similar to following and you can just send the transaction to execute and mint your tokens.
+В качестве альтернативы Вы можете открыть свой MEW кошелек, и перейти на страницу "Отправить транзакцию", с расширенными параметрами. Теперь Вам необходимо отправить транзакцию в смарт-контракт при помощи шлюза со значением Ether **0**, а поле данных - это данные команды, полученные на предыдущем шаге. Ваш экран должен выглядеть примерно так, как показано ниже, и Вы можете просто отправить транзакцию на выполнение и создать свои токены.
 
 ![](https://user-images.githubusercontent.com/1995809/118490096-2753c480-b750-11eb-9c9d-5eb478194ae4.png)
 
-(Note that the "To Address" is the address of Axelar Gateway smart contract, which you can find under [Testnet Release](/testnet-releases), and the "Add Data" field is the command data you got from the previous step)
+(Обратите внимание, что "To Address" - это адрес смарт-контракта Axelar шлюза., который вы можете найти здесь [Версия Testnet](/testnet-releases), а поле "Добавить данные" - это данные команды, которые D\Вы получили на предыдущем шаге)
 
-You can now open Metamask, select "Assets" then "Add Token" then "Custom Token" and then paste the token contract address (see [Testnet Release](/testnet-releases) and look for  `Ethereum token contract address` field).
+Теперь вы можете открыть Metamask, выбрать "Активы", затем "Добавить токен", затем "Пользовательский токен", после чего вставить адрес контракта токена. (см. [Версию Testnet](/testnet-releases) и найдите поле `С адресом контракта токена в сети Ethereum`).
 
 ### Burn ERC20 wrapped Bitcoin tokens and obtain native Satoshi
 
