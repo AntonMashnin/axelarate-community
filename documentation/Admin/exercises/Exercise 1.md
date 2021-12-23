@@ -113,57 +113,57 @@ axelard q evm batched-commands ethereum {batched commands ID from step 4}
 
 Теперь вы можете открыть Metamask, выбрать "Активы", затем "Добавить токен", затем "Пользовательский токен", после чего вставить адрес контракта токена. (см. [Версию Testnet](/testnet-releases) и найдите поле `С адресом контракта токена в сети Ethereum`).
 
-### Burn ERC20 wrapped Bitcoin tokens and obtain native Satoshi
+### Сжечь обернутые биткойн-токены ERC20 и получите родные сатоши
 
-To send wrapped Bitcoin back to Bitcoin, run the following commands:
+Чтобы конвертировать обёрнутый биткойн обратно в биткойн, выполните следующие команды:
 
-1. Create a deposit address on Ethereum
+1. Создайте Ethereum депозит адрес
 
 ```bash
 axelard tx evm link ethereum bitcoin {destination bitcoin addr} satoshi --from validator
 ```
 
-e.g.,
+т.е.,
 ```bash
 axelard tx evm link ethereum bitcoin tb1qg2z5jatp22zg7wyhpthhgwvn0un05mdwmqgjln satoshi --from validator
 ```
 
-Look for the Ethereum deposit address as the first output in this line (`0x5CFE...`):
+Найдите адрес депозита Ethereum в качестве первой строчки вывода в этой строке (`0x5CFE...`):
 
 ```bash
 "successfully linked {0x5CFEcE3b659e657E02e31d864ef0adE028a42a8E} and {tb1qq8wnre6rzctec9wycrl2dq00m3avravslahc8v}"
 ```
-:::note
-Make sure to link a Bitcoin address that is controlled by you, e.g. if you link it to an address controlled by Axelar your withdrawal will be considered a donation and added to the pool of funds
+:::обратите внимание
+Убедитесь, что вы связали биткойн-адрес, который контролируется Вами, т.е. если Вы свяжете его с адресом, контролируемым Axelar, Ваш вывод будет считаться пожертвованием и добавлен в пул средств
 :::
 
-2. External: send wrapped tokens to deposit address (e.g. with Metamask). You need to have some Ropsten testnet Ether on the address to send transactions. Wait for 30 Ethereum block confirmations. You can monitor the status of your deposit using the testnet explorer: https://ropsten.etherscan.io/
+2. Внешний: отправить завернутые токены на адрес депозита (например, с помощью Metamask). Для отправки транзакций на Вашем кошельке должен быть тестовой эфириум в сети Ropsten. Подождите 30 подтверждений блока Ethereum. Вы можете следить за состоянием своего депозита с помощью проводника тестовой сети: https://ropsten.etherscan.io/
 
-3. Confirm the Ethereum transaction
+3.Подтвердите Ethereum транзакцию 
 
 ```bash
 axelard tx evm confirm-erc20-deposit ethereum {txID} {amount} {deposit addr} --from validator
 ```
 
-Here, amount should be specific in Satoshi. (For instance, 0.0001BTC = 10000)
-e.g.,
+Здесь количество должно быть указано в сатошах. (Например, 0.0001BTC = 10000)
+т.е.,
 
 ```bash
 axelard tx evm confirm-erc20-deposit ethereum 0x01b00d7ed8f66d558e749daf377ca30ed45f747bbf64f2fd268a6d1ea84f916a 10000 0x5CFEcE3b659e657E02e31d864ef0adE028a42a8E --from validator
 ```
-Verify that the Ethereum deposit transaction confirmation was successful.
+Убедитесь, что подтверждение транзакции Ethereum депозита прошло успешно.
 
 ```bash
 axelard q evm deposit-state ethereum {txID} {deposit addr} {amount}
 ```
 
-e.g.,
+т.е.,
 
 ```bash
 axelard q evm deposit-state ethereum 0xa959623013b5355de5f023fb3044dae02bf915d57b9440460ca59a98663741a8 0x7c5578F5cC4c9253F1E5495240785DD477843D80 10000
 ```
-You should see `deposit transaction is confirmed`.
+Вы должны увидеть `deposit transaction is confirmed`.
 
-:::tip
-In this release, we're triggering these commands about once a day. So come back in 24 hours, and check the balance on the Bitcoin testnet address to which you submitted the withdrawal.
+:::подсказка
+В этом релизе, мы запускаем эти команды примерно раз в день. Так что вернитесь через 24 часа и проверьте баланс на адресе тестовой сети Биткойн, на который Вы отправили вывод средств.
 :::
