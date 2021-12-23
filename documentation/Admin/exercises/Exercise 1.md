@@ -17,16 +17,16 @@ Axelar Network находится в стадии разработки. Ни в 
 
 ## Предварительные требования
 - Выполните все шаги из этого руководства [Установка при помощи Docker(a)](/setup-docker) или [Установка из исходного кода](/setup-binaries)
-- Установите кошелек Ethereum с использованием [MEW](https://www.myetherwallet.com/) и получите адрес Ethereum кошелька, которій будет финансироваться за счет эфира (Вы также можете использовать[Chrome плагин](https://chrome.google.com/webstore/detail/mew-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en))
+- Установите кошелек Ethereum с использованием [MEW](https://www.myetherwallet.com/) и получите адрес Ethereum кошелька, который будет финансироваться за счет эфириума (Вы также можете использовать[Chrome плагин](https://chrome.google.com/webstore/detail/mew-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en))
 
 ## Полезные ссылки
 - [Axelar Кран](http://faucet.testnet.axelar.dev/)
-- Latest docker images:
+- Последняя версия Docker образа:
   + https://hub.docker.com/repository/docker/axelarnet/axelar-core
   + https://hub.docker.com/repository/docker/axelarnet/tofnd
-- Exercise 1 [walkthrough video](https://youtu.be/QC7Gx-ydTtw) using Docker 
-  + Completed on Axelar core version v0.7.6, be careful of potential differences in the workflow
-- [Extra commands](/extra-commands) to query Axelar Network state
+- Упражнение 1 [видео с пошаговым руководством](https://youtu.be/QC7Gx-ydTtw) как использовать Docker 
+  + Для выполнения задания использовалась версия Axelar v0.7.6, будьте осторожны с потенциальными различиями в рабочем процессе
+- [Дополнительные команды](/extra-commands) для запроса состояния сети Axelar
 
 ## What you need
 - Bitcoin testnet faucet to send some test BTC: https://testnet-faucet.mempool.co/
