@@ -78,7 +78,7 @@ axelard tx bitcoin confirm-tx-out "{txID:vout}" "{amount}btc" "{deposit address}
 axelard tx bitcoin confirm-tx-out 615df0b4d5053630d24bdd7661a13bea28af8bc1eb0e10068d39b4f4f9b6082d:0 0.00088btc tb1qlteveekr7u2qf8faa22gkde37epngsx9d7vgk98ujtzw77c27k7qk2qvup --from validator
 ```
 
-Дождитесь подтверждения транзакции (~10 Axelar блоков, ~50 secs).
+Дождитесь подтверждения транзакции (~10 Axelar блоков, ~50 секунд).
 В конце концов, вы увидите что-то вроде этого в консоли сервера:
 
 ```bash
