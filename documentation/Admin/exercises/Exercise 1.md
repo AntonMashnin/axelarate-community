@@ -79,7 +79,7 @@ axelard tx bitcoin confirm-tx-out 615df0b4d5053630d24bdd7661a13bea28af8bc1eb0e10
 ```
 
 Дождитесь подтверждения транзакции (~10 Axelar блоков, ~50 секунд).
-В конце концов, вы увидите что-то вроде этого в консоли сервера:
+В итоге, Вы увидите что-то вроде этого в консоли сервера:
 
 ```bash
 bitcoin outpoint confirmation result is
