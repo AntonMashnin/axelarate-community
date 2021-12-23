@@ -29,7 +29,7 @@ Axelar Network находится в стадии разработки. Ни в 
 - [Дополнительные команды](/extra-commands) для получения состояния сети Axelar
 
 ## Что Вам понадобиться
-- Биткойн кран тестовой сети для отправки тестовых BTC:: https://testnet-faucet.mempool.co/
+- Биткойн кран тестовой сети для отправки тестовых BTC: https://testnet-faucet.mempool.co/
 - Metamask
 - Ethereum Ropsten адрес (сгенерированный в Metamask)
 
