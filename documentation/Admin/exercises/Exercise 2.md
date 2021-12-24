@@ -1,7 +1,7 @@
 ---
 id: e2
 sidebar_position: 2
-sidebar_label: Exercise 2
+sidebar_label: Упражнение 2
 slug: /exercises/e2
 ---
 
