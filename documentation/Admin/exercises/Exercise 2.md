@@ -5,30 +5,29 @@ sidebar_label: Упражнение 2
 slug: /exercises/e2
 ---
 
-# Exercise 2
-Transfer BTC to Ethereum (as a wrapped asset) and back using `c2d2cli`.
+# Упражнение 2
+Переведите BTC в Ethereum (как обёрнутый актив) и обратно с помощью `c2d2cli`.
 
-C2D2 is the axelar cross-chain dapp deamon which coordinates the necessary transactions for cross-chain asset transfers.
-The C2D2 CLI automates the steps we performed manually in exercise 1.
+C2D2 - это Axelar крос-чейн приложение, которое координирует необходимые транзакции для передачи активов между сетями.
+Интерфейс командной строки C2D2 автоматизирует шаги, которые мы выполняли вручную в упражнении 1.
 
-## Status
-Inactive/Completed
+## Статус
+Неактивно/Завершено
 
 ## Level
-Intermediate
+Средний
 
-## Disclaimer
-:::warning
-Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+## Отказ от ответственности
+:::предупреждение Axelar Network находится в стадии разработки. Ни в коем случае нельзя передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять. Axelar не несет ответственности за потерянные активы, или их заморозку или за токены которые не подлежат восстановлению в любом состоянии. Если Вы обнаружите проблему,пожалуйста, сообщите о ней используя данный репозиторий, следуя шаблону.
 :::
 
-## Prerequisites
-- Complete all steps from [Setup with Docker](/setup-docker) or [Setup with Binaries](/setup-binaries)
+## Предварительные требования
+- Выполните все шаги из этого руководства [Установка при помощи Docker(a)](/setup-docker) или [Установка из исходного кода](/setup-binaries)
 
-## Useful links
-- [Extra commands to query Axelar Network state](/extra-commands)
+## Полезные ссылки
+- [Дополнительные команды для получения состояния сети Axelar](/extra-commands)
 
-## What you need
+## Что Вам понадобиться
 - Bitcoin testnet wallet with some tBTC (faucet [https://testnet-faucet.mempool.co/](https://testnet-faucet.mempool.co/))
 - Ethereum wallet on the Ropsten network (we reccomend Metamask)
 - Some Ropsten ETH (faucet [https://faucet.ropsten.be/](https://faucet.ropsten.be/) or [https://faucet.dimensions.network/](https://faucet.dimensions.network/))
