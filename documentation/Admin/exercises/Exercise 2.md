@@ -28,101 +28,99 @@ C2D2 - это Axelar крос-чейн приложение, которое ко
 - [Дополнительные команды для получения состояния сети Axelar](/extra-commands)
 
 ## Что Вам понадобиться
-- Bitcoin testnet wallet with some tBTC (faucet [https://testnet-faucet.mempool.co/](https://testnet-faucet.mempool.co/))
-- Ethereum wallet on the Ropsten network (we reccomend Metamask)
-- Some Ropsten ETH (faucet [https://faucet.ropsten.be/](https://faucet.ropsten.be/) or [https://faucet.dimensions.network/](https://faucet.dimensions.network/))
+- Bitcoin testnet кошелек с некоторым количеством tBTC (кран [https://testnet-faucet.mempool.co/](https://testnet-faucet.mempool.co/))
+- Кошелек Ethereum в сети Ropsten (мы рекомендуем использовать для этих целей Metamask)
+- Немного Ropsten ETH (кран [https://faucet.ropsten.be/](https://faucet.ropsten.be/) или [https://faucet.dimensions.network/](https://faucet.dimensions.network/))
 
-## Joining the Axelar testnet
+## Присоединитесь к тестовой сети Axelar
 
-Follow the instructions in [Setup with Docker](/setup-docker) or [Setup with Binaries](/setup-binaries) to make sure your node is synchronized to the latest block, and you have received some test coins to your validator account.
+Используйте руководство для [настройки среды с помощью Docker](/setup-docker) или [настройки из исходного кода](/setup-binaries) убедитесь, что Ваш сервер обновлен, и Вы получили несколько тестовых монет на свою учетную запись валидатора.
 
-### Pull and enter the c2d2cli container
-Check [Testnet Release](/testnet-releases) for the latest available C2D2 version of the docker images.
+### Получите и выйдите в c2d2cli контейнер
+Проверьте [Testnet Release](/testnet-releases) для получения последней доступной версии образов докеров C2D2.
 
-On a new terminal window, enter the `c2d2cli` container by running:
+В новом окне терминала войдите в контейнер c2d2cli, запустив:
 ```bash
 ./c2d2/c2d2cli.sh --version VERSION
 ```
 
-### Generate a key on Axelar and get some test tokens
+### Сгенерируйте ключ Axelar и получите несколько тестовых токенов
 
-Create c2d2's Axelar blockchain account
+Создайте учетную запись блокчейна Axelar c2d2
 ```bash
 c2d2cli keys add c2d2
 ```
 
-Go to axelar faucet and fund your C2D2 account by providing the address to the
-[facuet](http://faucet.testnet.axelar.dev/). You can get c2d2's account
-address by running
+Воспользуйтесь краном Axelar и пополните свой счет C2D2, указав адрес
+[facuet](http://faucet.testnet.axelar.dev/). Вы можете получить адрес учетной записи c2d2, запустив
 
 ```bash
 c2d2cli keys show c2d2 -a
 ```
 
-### Fund your ethereum sender account
-Add an ethereum account to c2d2cli. When prompted enter the password `passwordpassword`.
+### Пополните свой ethereum адрес отправителя
+Добавьте учетную запись ethereum в c2d2cli. При появлении запроса задайте пароль `password password`.
 ```bash
 c2d2cli bridge evm accounts add ethereum
 ```
 
-You will be asked to enter a password for the account. Make a note of your password.
+Вам будет предложено ввести пароль для учетной записи. Обязательно запишите его.
 
 
 
-If you used a different password than `passwordpassword` you will need to either:
-1. enter your password manually during the transfer procedure
-2. **Or** provide your password to each `c2d2cli` command by adding the flag `--evm-passphrase YOUR_PASSWORD`
-3. **Or** configure your password by editing the `/root/.c2d2cli/config.toml` file.
-- Change the value in the `sender-passphrase=` key to your password.
+Если Вы использовали свой пароль, а не предложенный ранее `passwordpassword`, Вам необходимо:
+1. Ввести свой пароль вручную во время процедуры переноса
+2. **или** указывать свой пароль для каждой команды `c2d2cli`, добавив флаг `--evm-passphrase YOUR_PASSWORD`
+3. **или** настройте свой пароль, отредактировав файл `/root/.c2d2cli/config.toml`
+- Измените значение на свой пароль для ключа `sender-passphrase=`.
 
-List C2D2's accounts:
+Список C2D2's учётных записей:
 
 ```bash
 c2d2cli bridge evm accounts list ethereum
 ```
 
-Account index `0` (the first address in the list) will be used to send transactions. Go to [https://faucet.ropsten.be/](https://faucet.ropsten.be/) to get some Ropsten ETH for the sender account.
+Индекс аккаунта `0` (первый адрес в списке) будет использоваться для отправки транзакций. Перейдите на [https://faucet.ropsten.be/] (https://faucet.ropsten.be/), чтобы получить Ropsten ETH для учетной записи отправителя.
 
-### Mint ERC20 Bitcoin tokens on Ethereum
-1. Generate a Bitcoin deposit address. For this step you will need to supply an Ethereum address that you have the private key for. This will be the `[ethereum recipient address]` in the example command below. This address will then be linked to the Bitcoin deposit address generated and will receive the pegged bitcoin (Satoshi tokens) on the Ethereum testnet.
+### Получите ERC20 Bitcoin монеты в Ethereum
+1. Создайте адрес биткоин депозита. Для этого шага Вам нужно будет указать адрес Ethereum, от которого у Вас есть закрытый ключ. Это будет `[ethereum адрес получателя]` в приведенном ниже примере команды. Затем этот адрес будет связан с сгенерированным адресом биткоин депозита и получит привязанный биткойн (токены сатоши) в тестовой сети Ethereum.
 ```bash
 c2d2cli transfer satoshi [ethereum recipient address] --source-chain bitcoin --dest-chain ethereum --gas=auto --gas-adjustment=1.4
 ```
 
-You will see the deposit Bitcoin address printed in the terminal
+Вы увидите биткойн-адрес депозита, который будет показан в консоли
 
 ```bash
 action:  (2/7) Please deposit Bitcoin to tb1qgfk6v2ut9flwwkraj6t3syvpq22g0xhh2m73atfe79jv3msjwvzqtpuvfc
 ```
 
-2. **External**: send some TEST BTC on Bitcoin testnet to the deposit address specific above, and wait for 6 confirmations (i.e. the transaction is 6 blocks deep in the Bitcoin chain).
+2. **Внешний**: отправьте несколько ТЕСТОВЫХ BTC в тестовой сети Биткойн на адрес биткоин депозита, указанный выше, и дождитесь 6 подтверждений (в биткойн сети).
 
-- ALERT: **DO NOT SEND ANY REAL ASSETS**
-- Bitcoin testnet faucet [https://testnet-faucet.mempool.co/](https://testnet-faucet.mempool.co/)
-- You can monitor the status of your deposit using the testnet explorer: [https://blockstream.info/testnet/](https://blockstream.info/testnet/)
+- ВНИМАНИЕ: **НЕ ОТПРАВЛЯЙТЕ РЕАЛЬНЫЕ АКТИВЫ**
+- Вы можете использовать биткойн кран, например [https://testnet-faucet.mempool.co/](https://testnet-faucet.mempool.co/)
+- Вы можете следить за состоянием своего депозита с помощью проводника в тестовой сети: [https://blockstream.info/testnet/](https://blockstream.info/testnet/)
 
-Do not exit `c2d2cli` while you are waiting for your deposit to be confirmed. It will be watching the bitcoin blockchain to detect your transaction.
-- If `c2d2cli` crashes or is closed during this step you can re-run the `deposit-btc` command with the same recipient address to resume.
-- If your transaction has 6 confirmations but `c2d2cli` has not detected it, you can restart `c2d2cli` and append the `--bitcoin-tx-prompt` flag.
-- The CLI will prompt you to enter the deposit tx info manually. The rest of the deposit procedure will still be automated.
+Не выходите из интерфейса `c2d2cli`, пока Вы ждете подтверждения Вашего депозита. Он будет следить за блокчейном биткоина, чтобы обнаружить Вашу транзакцию.
+- Если на этом шаге происходит сбой или закрытие интерфейса `c2d2cli`, Вы можете повторно запустить команду `deposit-btc` с тем же адресом получателя.
+- Если Ваша транзакция получила 6 подтверждений, но `c2d2cli` ее не обнаружил, Вы можете перезапустить утилиту `c2d2cli` и добавить флаг `--bitcoin-tx-prompt`.
+- Интерфейс командной строки предложит Вам ввести данные о депозите вручную. Остальная часть процедуры депозита по-прежнему будет автоматизирована.
 - `c2d2cli transfer satoshi [ethereum recipient address] --source-chain bitcoin --dest-chain ethereum  --bitcoin-tx-prompt --gas=auto --gas-adjustment=1.4`
 
-Once your transaction is detected, `c2d2cli` will wait until it has 6 confirmations before proceeding.
+Как только Ваша транзакция будет обнаружена, `c2d2cli` будет ждать, пока не получит 6 подтверждений, прежде чем продолжить.
 
-3. C2D2 will automate the bitcoin deposit confirmation, and mint command signing and sending. Once the minting process completes you will see the following message:
+3. C2D2 автоматически выполнит подтверждение биткоин депозита, и выполнит команду подписи и отправки. После завершения процесса Вы увидите следующее сообщение:
 
 ```bash
 Transferred satoshi to Ethereum address [ethereum recipient address]
 ```
 
-You can now open Metamask and add the wrapped BTC contract address. `c2d2cli` will print the contract address like this:
-
+Теперь Вы можете открыть Metamask и добавить обернутый адрес контракта BTC. `c2d2cli` отобразит адрес контракта следующим образом:
 ```bash
 Using AxelarGateway <address>
 Using satoshi token <address>
 ```
 
-The contract will show in metamask as symbol 'Satoshi'. If your recipient address is in metamask, you will have an amount of satoshi tokens in metamask equal to your bitcoin deposit.
+Контракт будет отображаться в метамаске как символ 'Сатоши'. Если Ваш адрес получателя находится в метамаске, у Вас будет количество токенов сатоши в метамаске, равное Вашему депозиту в биткойнах.
 
 ### Burn ERC20 wrapped Bitcoin tokens and obtain native Satoshi
 1. Generate an ethereum withdrawal address. The Bitcoin address you provide will be uniquely linked to the deposit address and receive the withdrawn BTC on the Bitcoin testnet.
