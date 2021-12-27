@@ -122,45 +122,44 @@ Using satoshi token <address>
 
 Контракт будет отображаться в метамаске как символ 'Сатоши'. Если Ваш адрес получателя находится в метамаске, у Вас будет количество токенов сатоши в метамаске, равное Вашему депозиту в биткойнах.
 
-### Burn ERC20 wrapped Bitcoin tokens and obtain native Satoshi
-1. Generate an ethereum withdrawal address. The Bitcoin address you provide will be uniquely linked to the deposit address and receive the withdrawn BTC on the Bitcoin testnet.
+### Сжечь обёрнутые ERC20 биткои токены и получить родные сатоши
+1. Создайте ethereum адрес вывода. Предоставленный Вами биткойн-адрес будет однозначно связан с адресом депозита на который Вы получите выведенные BTC в тестовой сети Биткойн.
 
 ```bash
 c2d2cli transfer satoshi [bitcoin recipient address] --source-chain ethereum --dest-chain bitcoin --gas=auto --gas-adjustment=1.4
 ```
 
-For example:
+Например:
 ```bash
 c2d2cli transfer satoshi tb1qwtrclv55yy26awl2n40u57uck5xgty4w4h9eww --source-chain ethereum --dest-chain bitcoin --gas=auto --gas-adjustment=1.4
 ```
 
-You will see the deposit Ethereum address printed in the terminal.
+Вы увидите адрес депозита Ethereum, полученный в консоли
 
 ```bash
 action:  (2/5) Please transfer satoshi tokens to Ethereum address 0xf5fccEeF24358fE24C53c1963d5d497BCD3ddF48
  | ✓ Waiting for a withdrawal transaction
 ```
 
-2. **External**: send wrapped Satoshi tokens to withdrawal address (e.g. with Metamask). You need to have some Ropsten testnet Ether on the address to send transactions.
+2. **Внешний**: отправить обёрнутые токены Satoshi на адрес вывода (например, с помощью Metamask). Для выполнения транзакций на Вашем кошельке должен быть какой-то эфир тестовой сети Ropsten.
 
 
-3. Once your withdrawal transaction is detected, `c2d2cli` will wait for 30 Ropsten block confirmations before proceeding.
+3. Как только Ваша транзакция о выводе средств будет обнаружена, `c2d2cli` нужно будет дождаться 30 подтверждений в сети Ropsten, прежде чем продолжить.
 
+4. `c2d2cli` автоматизирует подтверждение вывода и сжигание токена сатоши (обернутого BTC).
 
-4. `c2d2cli` will automate the withdrawal confirmation, and satoshi token (wrapped BTC) burning.
-
-5. Once your Satoshi tokens have been burned, you will see this message:
+5. Как только ваши токены сатоши будут сожжены, Вы увидите это сообщение:
 
 ```bash
 Transferred 5000 satoshi tokens to Bitcoin address [bitcoin recipient address]
 ```
 
-6. Your withdrawn BTC will be spendable by your recipient address once Bitcoin withdrawal consolidation occurs. Consolidation will be completed by a separate process.
+6. Ваши снятые BTC будут потрачены Вашим адресом получателя, как только произойдет объединение вывода биткойнов. Консолидация будет завершена как отдельный процесс.
 
-An automated service processes all pending transfers from the Axelar network to Bitcoin a few times a day. Come back 24 hours to check your coins at the destination Bitcoin address on the testnet.
+Автоматическая служба обрабатывает все ожидающие транзакции из сети Axelar в биткойн несколько раз в день. Вернитесь через 24 часа, чтобы проверить свои монеты на исходном биткойн-адресе в тестовой сети.
 
-:::note
-If your local axelar node fails, meaning `c2d2cli` cannot connect to it to broadcast transactions, you may use an Axelar public node to broadcast transactions by adding the config file flag `--conf /config.testnet.toml` like so:
+:::обратите внимание
+Если Ваш локальный узел Axelar не работает, т.е `c2d2cli` не может подключиться к нему для широковещательных транзакций, Вы можете использовать общедоступный узел Axelar для выполнения широковещательных транзакций, добавив вот такой вот флаг `--conf /config.testnet.toml`:
 
 ```bash
 c2d2cli transfer satoshi [bitcoin recipient address] --source-chain ethereum --dest-chain bitcoin --conf /config.testnet.toml --gas=auto --gas-adjustment=1.4
