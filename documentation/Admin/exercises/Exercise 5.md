@@ -1,54 +1,53 @@
 ---
 id: e5
 sidebar_position: 5
-sidebar_label: Exercise 5
+sidebar_label: Упражнение 5
 slug: /exercises/e5
 ---
-# Exercise 5
-Transfer assets from Axelar Network to EVM-compatible chains and back via Axelar Network CLI.
+# Упражнение 5
+Перенос активов из Axelar Network в EVM-совместимые сети и обратно через командную строку Axelar Network.
 
-## Level
-Intermediate
+## Уровень
+Средний
 
-## Disclaimer
-:::warning
-Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+## Отказ от ответственности
+:::предупреждение Axelar Network находится в стадии разработки. Ни в коем случае нельзя передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять. Axelar не несет ответственности за потерянные активы, или их заморозку или за токены которые не подлежат восстановлению в любом состоянии. Если Вы обнаружите проблему,пожалуйста, сообщите о ней используя данный репозиторий, следуя шаблону.
 :::
 
-## Prerequisites
-- Complete all steps from [Setup with Docker](/setup-docker) or [Setup with Binaries](/setup-binaries)
-- Have a Ethereum wallet setup and have an Ethereum address funded with some Ether (You can also choose to use the [Chrome plugin](https://chrome.google.com/webstore/detail/mew-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en))
-- You must have some `uaxl` tokens in your Axelar Network address. You can get AXL tokens from the [Axelar faucet](http://faucet.testnet.axelar.dev/).
+## Предварительные требования
+- Выполните все шаги из этого руководства [Установка при помощи Docker(a)](/setup-docker) или [Установка из исходного кода](/setup-binaries)
+- Установите кошелек Ethereum и получите адрес Ethereum, на котором есть средства для выполнения транзакций. (Вы также можете использовать [Chrome плагин](https://chrome.google.com/webstore/detail/mew-cx/nlbmnnijcnlegkjjpcfjclmcfggfefdm?hl=en))
+- У вас должно быть несколько токенов `uaxl` на Вашем сетевом адресе Axelar. Вы можете получить токены AXL здесь [Axelar кран](http://faucet.testnet.axelar.dev/).
 
-## Useful links
-- [Axelar faucet](http://faucet.testnet.axelar.dev/)
-- Latest docker image: https://hub.docker.com/repository/docker/axelarnet/axelar-core
-- [Extra commands to query Axelar Network state](/extra-commands)
+## Полезные ссылки
+- [Axelar кран](http://faucet.testnet.axelar.dev/)
+- Последняя версия Docker образа: https://hub.docker.com/repository/docker/axelarnet/axelar-core
+- [Дополнительные команды для получения состояния сети Axelar](/extra-commands)
 
-## What you need
+## Что Вам понадобиться
 - Metamask
-- Ethereum Ropsten address (generate via Metamask)
+- Ethereum Ropsten адрес (сгенерированный в Metamask)
 
-## Joining the Axelar testnet
+## Присоединитесь к тестовой сети Axelar
 
-Follow the instructions in [Setup with Docker](/setup-docker) or [Setup with Binaries](/setup-binaries) to make sure your node is up to date and you received some test coins to your account.
+Используйте руководство для [Настройки среды с помощью Docker](/setup-docker) или [настройки из исходного кода](/setup-binaries) убедитесь, что Ваш сервер обновлен, и Вы получили несколько тестовых монет на свою учетную запись валидатора.
 
-### Sending tokens from Axelar Network to Ethereum
+### Отправка монет с Axelar сети в сеть Ethereum 
 
-In what follows we assume your Axelar account name is `validator`.  This is the default name for the account that is automatically created for you when you first joined the Axelar testnet.
+Далее,в качестве примера мы предположим, что имя Вашей учетной записи Axelar `validator`.  Это имя по умолчанию для учетной записи, которая автоматически создается для Вас, когда Вы впервые присоединяетесь к тестовой сети Axelar.
 
-1. Check that you have balances on your account
+1. Убедитесь, что у Вас положительный баланс на Вашем аккаунте
 
 ```bash
 axelard q bank balances $(axelard keys show validator -a)
 ```
-You should see your balances shows e.g.,
+Вы можете увидеть свой баланс т.е.,
 ```bash
 balances:
 - amount: "1000000"
  denom: uaxl
 ```
-2. Create a deposit address on Axelar Network (to which you'll deposit coins later)
+2. Создайте адрес депозита в сети Axelar (на который, позже, Вы будете вносить монеты)
 
 [token] is `uaxl`.
 
