@@ -1,183 +1,182 @@
 ---
 id: e3
 sidebar_position: 3
-sidebar_label: Exercise 3
+sidebar_label: Упражнение 3
 slug: /exercises/e3
 ---
-# Exercise 3
-Transfer BTC to Axelar Network (as a wrapped asset) and back via Axelar Network CLI.
+# Упражнение 3
+Перенесите BTC в Axelar Network (как обёрнутый актив) и обратно через интерфейс командной строки Axelar Network.
 
 ## Level
-Intermediate
+Средний
 
-## Disclaimer
-:::warning
-Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+## Отказ от ответственности
+:::предупреждение Axelar Network находится в стадии разработки. Ни в коем случае нельзя передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять. Axelar не несет ответственности за потерянные активы, или их заморозку или за токены которые не подлежат восстановлению в любом состоянии. Если Вы обнаружите проблему,пожалуйста, сообщите о ней используя данный репозиторий, следуя шаблону.
 :::
 
-## Prerequisites
-- Complete all steps from [Setup with Docker](/setup-docker) or [Setup with Binaries](/setup-binaries)
+## Предварительные требования
+- Выполните все шаги из этого руководства [Установка при помощи Docker(a)](/setup-docker) или [Установка из исходного кода](/setup-binaries)
 
-## Useful links
-- [Axelar faucet](http://faucet.testnet.axelar.dev/)
-- Latest docker image: https://hub.docker.com/repository/docker/axelarnet/axelar-core
-- Exercise 3 [walkthrough video](https://youtu.be/ggngYFa0AnQ) using Docker 
-  + Completed on Axelar core version v0.7.6, be careful of potential differences in the workflow
-- [Extra commands](/extra-commands) to query Axelar Network state
+## Полезные ссылки
+- [Axelar кран](http://faucet.testnet.axelar.dev/)
+- Последняя версия Docker образа: https://hub.docker.com/repository/docker/axelarnet/axelar-core
+- Упражнение 3 [видео с пошаговым руководством](https://youtu.be/ggngYFa0AnQ) как использовать Docker 
+  + Для выполнения задания использовалась версия Axelar v0.7.6, будьте осторожны с потенциальными различиями в рабочем процессе
+- [Дополнительные команды](/extra-commands) для получения состояния сети Axelar
 
-## What you need
-- Bitcoin testnet faucet to send some test BTC: https://testnet-faucet.mempool.co/
+## Что Вам понадобиться
+- Биткойн кран тестовой сети для отправки тестовых BTC:: https://testnet-faucet.mempool.co/
 
 
-## Joining the Axelar testnet
+## Присоединитесь к тестовой сети Axelar
 
-Follow the instructions in [Setup with Docker](/setup-docker) or [Setup with Binaries](/setup-binaries) to make sure your node is up to date.
+Используйте руководство для [настройки среды с помощью Docker](/setup-docker) или [настройки из исходного кода](/setup-binaries) убедитесь, что Ваш сервер обновлен до последней версии.
 
-## Instructions to mint and burn tokens
-These instructions are a step by step guide to run commands to move an asset from a source to a destination chain and back. The assets are minted as wrapped assets on the Axelar Network. The commands are submitted to the Axelar Network that's responsible for (a) generating deposit/withdrawal addresses, (b) routing and finalizing transactions, and (c) minting/burning the corresponding assets.
+## Инструкция создания и сжигание монет
+Эти инструкции представляют собой пошаговое руководство, выполнения команд для перемещения актива из исходного места в сеть назначения и обратно. Активы создаются как обернутые активы в сети Axelar. Команды отправляются в сеть Axelar Network, которая отвечает за (а) создания адресов ввода/вывода, (b) маршрутизацию и завершение транзакций, и (c) создание/сжигание соответствующих активов.
 
-To perform these tests, you'll need some test Bitcoins on the Bitcoin testnet, and a destination Axelar Network address on the Axelar Network Testnet.
+Для выполнения этих тестов Вам понадобятся несколько тестовых биткойнов в тестовой сети Биткойн, и адрес получателя Axelar в тестовой сети Axelar Testnet.
 
-### Mint Wrapped Bitcoin tokens on Axelar Network
-1. Generate a new axelar address
+### Создание Bitcoin монет в сети Axelar
+1. Сгенерируйте новый Axelar адрес
 ```bash
 axelard keys add [key-name]
 ```
-Go to axelar faucet and get some coins on your newly created address. http://faucet.testnet.axelar.dev/
+Посетите в Axelar кран и получите несколько монет на свой созданный адрес. http://faucet.testnet.axelar.dev/
 
-Check that you received the funds
+Убедитесь, что вы получили средства
 ```bash
 axelard q bank balances [output address above]
 ```
 
-2. Create a deposit address on Bitcoin (to which you'll deposit coins later)
+2. Создайте Bitcoin депозит адрес (на который, позже, Вы внесёте монеты)
 
-The [Axelar Network dst addr] is the address you created in step 1, associated with your [key-name]
-[key name] is the name you used in step1
+[Адрес назначения Axelar Network] это адрес, который Вы создали на шаге 1, связанный с Вашим [key-name]
+[key name] это имя, которое Вы использовали на шаге 1
 ```bash
 axelard tx bitcoin link axelarnet [Axelar Network dst addr] --from [key-name]
 -> returns deposit address
 ```
 
-e.g.,
+т.е.,
 ```bash
 axelard tx bitcoin link axelarnet axelar1xr04qffe0f0gf4sjzswefx0npadsxfmrs7kry6 --from my-key
 ```
 
-Look for `successfully linked [bitcoin deposit address] and [Axelar Network dst addr]`
+После этого Вы должны увидеть следующий вывод `successfully linked [bitcoin deposit address] and [Axelar Network dst addr]`
 
-3. External: send a TEST BTC on Bitcoin testnet to the deposit address specific above, and wait for 6 confirmations (i.e. the transaction is 6 blocks deep in the Bitcoin chain).
-- ALERT: DO NOT SEND ANY REAL ASSETS
-- You can use a bitcoin faucet such as https://bitcoinfaucet.uo1.net/ to send TEST BTC to the deposit address
-- You can monitor the status of your deposit using the testnet explorer: https://blockstream.info/testnet/
+3. Внешний: отправьте несколько ТЕСТОВЫХ BTC в тестовой сети Биткойн на адрес биткоин депозита, указанный выше, и дождитесь 6 подтверждений (в биткойн сети).
+- ВНИМАНИЕ: НЕ ОТПРАВЛЯЙТЕ РЕАЛЬНЫЕ АКТИВЫ
+- Вы можете использовать биткойн кран, например https://bitcoinfaucet.uo1.net/ отправить ТЕСТОВЫЙ BTC на адрес депозита
+- Вы можете следить за состоянием своего депозита с помощью проводника в тестовой сети: https://blockstream.info/testnet/
 
 
-4. Confirm the Bitcoin outpoint
+4. Подтвердите получение биткойна
 
-[key name] is the name you used in step1
+[key name] это имя, которое Вы использовали на шаге 1
 ```bash
 axelard tx bitcoin confirm-tx-out "[txID:vout]" "[amount]btc" "[deposit address]" --from [key-name]
 ```
 
-e.g.,
+т.е.,
 
 ```bash
 axelard tx bitcoin confirm-tx-out 615df0b4d5053630d24bdd7661a13bea28af8bc1eb0e10068d39b4f4f9b6082d:0 0.0001btc tb1qlteveekr7u2qf8faa22gkde37epngsx9d7vgk98ujtzw77c27k7qk2qvup --from my-key
 ```
 
-Wait for transaction to be confirmed (~10 Axelar blocks, ~50 secs).
-Eventually, you'll see something like this in the node terminal:
+Дождитесь подтверждения транзакции (~10 Axelar блоков, ~50 секунд).
+Вы увидите что-то вроде этого в консоли сервера:
 
 ```bash
 bitcoin outpoint confirmation result is
 ```
 
-You can search it using
+Вы можете выполнить поиск с помощью
 - `docker logs -f axelar-core 2>&1 | grep -a -e outpoint`
 - `docker logs -f axelar-core 2>&1 | grep -B 1 -e axelar1... (address from step 1)`
 
-5. Execute pending deposit on Axelar Network
-[key name] is the name you used in step1
+5. Выполнить отложенный депозит в сети Axelar
+[key name] это имя, которое Вы использовали на шаге 1
 ```bash
 axelard tx axelarnet execute-pending-transfers --from [key-name] --gas auto --gas-adjustment 1.2
 ```
-6. Check tokens are arrived
+6. Проверьте получение монет
 
-The [Axelar Network dst addr] is the address you created in step 1, associated with your [key-name]
+[Адрес назначения Axelar Network] это адрес, который Вы создали на шаге 1, связанный с Вашим [key-name]
 ```bash
 axelard q bank balances [Axelar Network dst addr]
 ```
-You should see the minted Bitcoin in satoshi
+Вы должны увидеть созданные биткойн сатоши.
 ```bash
 balances:
 - amount: "10000"
 denom: satoshi
 ```
 
-### Burn wrapped Satoshi tokens and obtain native Bitcoin
+### Сожгите обернутые биткойн-токены и получите родные сатоши
 
-To send wrapped Bitcoin back to Bitcoin, run the following commands:
+Чтобы конвертировать обёрнутый биткойн обратно в биткойн, выполните следующие команды:
 
-1. Create a deposit address on Axelar Network
+1. Создайте Axelar депозит адрес
 
-[key name] is the name you used in step1
+[key name] это адрес, который Вы создали на шаге 1
 ```bash
 axelard tx axelarnet link bitcoin [destination bitcoin addr] satoshi --from [key-name]
 -> returns deposit address
 ```
 
-e.g.,
+т.е.,
 ```bash
 axelard tx axelarnet link bitcoin tb1qtc2rjxezqumzxwe0kucj36k7mf83psa253684k satoshi --from my-key
 ```
 
-Look for the Axelarnet deposit address as the first output in this line (`axelar...`):
+Найдите адрес депозита Axelar в качестве первой строчки вывода в этой строке (`axelar...`):
 
 ```bash
 successfully linked {axelar12xywfpt5cq3fgc6jtrumq5n46chuq9xzsajj5v} and {tb1qtc2rjxezqumzxwe0kucj36k7mf83psa253684k}
 ```
-:::note
-Make sure to link a Bitcoin address that is controlled by you, e.g. if you link it to an address controlled by Axelar your withdrawal will be considered a donation and added to the pool of funds
+:::обратите внимание
+Убедитесь, что Вы связали биткойн-адрес, который контролируется Вами, т.е. если Вы свяжете его с адресом, контролируемым Axelar, Ваш вывод будет считаться пожертвованием и добавлен в пул средств
 :::
 
-2. send the satoshi token on Axelar Network to the deposit address specific above
+2. отправьте сатоши в сети Axelar на указанный выше адрес депозита
 
-:::tip
-Please do not send the whole amount, you will need some satoshi in Exercise 5
+:::подсказка
+Пожалуйста, не отправляйте всю сумму, Вам понадобятся сатоши в упражнении 5.
 :::
 ```bash
 axelard tx bank send [key-name] [Axelar Network deposit address] [amount]satoshi
 ```
-e.g.,
+т.е.,
 ```bash
 axelard tx bank send my-key axelar12xywfpt5cq3fgc6jtrumq5n46chuq9xzsajj5v 5000satoshi
 ```
 
 
 
-3. Confirm the deposit transaction
+3. Подтвердите транзакцию о получении депозита
 
-[txhash] is from the above command
+[txhash] из приведенной выше команды
 
-[amount] is same as was sent
+[amount] такое же, как было отправлено
 
-[key name] is the name you used in step1
+[key name] это имя, которое Вы использовали на шаге 1
 
 ```bash
 axelard tx axelarnet confirm-deposit [txhash] [amount]satoshi [Axelar Network deposit address] --from [my-key]
 ```
 
-Here, amount should be specific in Satoshi. (For instance, 0.0001BTC = 10000)
-e.g.,
+Здесь количество должно быть указано в сатоши. (Например, 0.0001BTC = 10000)
+т.е.,
 
 ```bash
 axelard tx axelarnet confirm-deposit 12B7795C49905194C5433E3413AABBF3C6AA27BFD1F20303C66DA4319B143A91 5000satoshi axelar12xywfpt5cq3fgc6jtrumq5n46chuq9xzsajj5v --from my-key
 ```
 
-You're done! In the next step, a withdrawal must be signed and submitted to the Bitcoin network.
+Готово! На следующем этапе вывод средств должен быть подписан и отправлен в сеть Биткойн.
 
-:::tip
-In this release, we're triggering these commands about once a day. So come back in 24 hours, and check the balance on the Bitcoin testnet address to which you submitted the withdrawal.
+:::подсказка
+В этом релизе, мы запускаем эти команды примерно раз в день. Так что вернитесь через 24 часа и проверьте баланс на адресе тестовой сети Биткойн, на который Вы отправили вывод средств.
 :::
 
 
