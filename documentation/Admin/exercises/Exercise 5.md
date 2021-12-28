@@ -51,34 +51,34 @@ balances:
 
 [token] is `uaxl`.
 
-[Ethereum Ropsten receipent address] is the address you want to receive the tokens to
+[Адрес получателя Ethereum Ropsten] это адрес, на который Вы получите токены
 ```bash
 axelard tx axelarnet link ethereum [Ethereum Ropsten receipent address] [token] --from validator
 ```
-Look for `successfully linked [Axelar Network deposit address] and [Ethereum Ropsten dst addr]`
+Вы должны увидеть `successfully linked [Axelar Network deposit address] and [Ethereum Ropsten dst addr]`
 
-3. Send the token on Axelar Network to the deposit address specified above
+3. Отправьте токен в сети Axelar на указанный Выше адрес депозита.
 ```bash
 axelard tx bank send validator [Axelar Network deposit address] [amount]"[token]"
 ```
 
-4. Confirm the deposit transaction
+4. Подтвердите депозит транзакцию
 
-[txhash] is from the above command
+[txhash] из приведенной выше команды
 
-[amount] and [token] are the same as in step 3 above
+[amount] и [token] такие же значения, как в шаге 3
 
-[Axelar Network deposit address] is the address above you deposited to
+[Axelar Network deposit address] это адрес, указанный выше, на котором выполнялось пополнение депозита
 
 ```bash
 axelard tx axelarnet confirm-deposit [txhash] [amount]"[token]" [Axelar Network deposit address] --from validator
 ```
-e.g.,
+т.е.,
 ```bash
 axelard tx axelarnet confirm-deposit F72D180BD2CD80DB756494BB461DEFE93091A116D703982E91AC2418EC660752  1000000uaxl axelar1gmwk28m33m3gfcc6kr32egf0w8g6k7fvppspue --from validator
 ```
 
-5. Create transfers on Ethereum and Sign
+5. Сделайте подпись и переводы на Ethereum
 ```bash
 axelard tx evm create-pending-transfers ethereum --from validator --gas auto --gas-adjustment 1.2
 ```
@@ -86,66 +86,67 @@ axelard tx evm create-pending-transfers ethereum --from validator --gas auto --g
 ```bash
 axelard tx evm sign-commands ethereum --from validator --gas auto --gas-adjustment 1.2
 ```
-Look for `successfully started signing batched commands with ID {batched commands ID}`.
+Вы должны увидеть `successfully started signing batched commands with ID {batched commands ID}`.
 
 6. Get the command data that needs to be sent in an Ethereum transaction in order to execute the mint
 ```bash
 axelard q evm batched-commands ethereum {batched commands ID from step 5}
 ```
-Wait for `status: BATCHED_COMMANDS_STATUS_SIGNED` and copy the `execute_data`
+Дождитесь `status: BATCHED_COMMANDS_STATUS_SIGNED` and copy the `execute_data`
 
-7. Send the Ethereum transaction wrapping the command data to execute the mint
+7. Отправьте Ethereum транзакцию, обернув данные команды выполнив
 
-- Open your Metamask wallet, go to Settings -> Advanced, then find Show HEX data and enable that option. This way you can send a data transaction directly with the Metamask wallet.
+- Откройте свой кошелек Metamask, перейдите в Настройки -> Дополнительно, затем найдите Показать данные HEX и включите эту опцию. Таким образом, вы можете отправить транзакцию с данными напрямую через кошелек Metamask.
 
-- Go to metamask, send a transaction to `Gateway smart contract address`, paste hex from `execute_data` above into Hex Data field
+- Перейти в Метамаск, отправить транзакцию на `Адрес смарт-контракта шлюза`, вставить hex из `execute_data` из вышеупомянутого поля Hex Data
 
-  Keep in mind not to transfer any tokens!
+  Помните, что нельзя передавать токены!
 
-  (Note that the "To Address" is the address of Axelar Gateway smart contract, which you can find under [Testnet Release](/testnet-releases))
+  (Обратите внимание, что "To Address" - это адрес смарт-контракта шлюза Axelar, который Вы можете найти здесь [Testnet релиз](/testnet-releases))
 
-You can now open Metamask, select "Assets", then "Import Token", then "Custom Token", and paste the Ethereum token contract address (see [Testnet Release](/testnet-releases) and look for the corresponding token address).
+Теперь вы можете открыть Metamask, выберите "Активы", затем "Импорт Токена", затем "Пользовательский токен", и вставьте адрес контракта токена Ethereum (см. [Testnet релиз](/testnet-releases) и найдите соответствующий адрес токена).
 
-You should now see [amount] tokens in your Ethereum Ropsten Metamask account.
+Теперь Вы должны увидеть [количество] токенов в своей учетной записи Ethereum Ropsten Metamask.
 
-### Burn ERC20 wrapped tokens and send back to Axelar Network
-1. Create a deposit address on Ethereum
+### Сожгите обернутые ERC20 токены и отправьте их обратно в сеть Axelar
 
-[token] is what you minted before, `uaxl`
+1. Создайте адрес в Ethereum сети
+
+[token] то, что вы получили раньше, `uaxl`
 
 ```bash
 axelard tx evm link ethereum axelarnet $(axelard keys show validator -a) [token] --from validator
 ```
-Look for `successfully linked [Ethereum Ropsten deposit address] and [Axelar Network dst addr]`
+Вы должны увидеть `successfully linked [Ethereum Ropsten deposit address] and [Axelar Network dst addr]`
 
-2. External: send wrapped tokens to  [Ethereum Ropsten deposit address] (e.g. with Metamask). You need to have some Ropsten testnet Ether on the address to send the transaction. Wait for 30 Ethereum block confirmations. You can monitor the status of your deposit using the testnet explorer: https://ropsten.etherscan.io/
+2. Внешний: отправить завернутые токены [на Ethereum Ropsten адрес] (т.е. с Metamask(a)). Для отправки транзакций на Вашем кошельке должен быть тестовой эфириум в сети Ropsten. Подождите 30 подтверждений блока Ethereum. YВы можете следить за состоянием своего депозита с помощью проводника тестовой сети: https://ropsten.etherscan.io/
 
-3. Confirm the Ethereum transaction
+3. Подтвердите Ethereum транзакцию
 
 ```bash
 axelard tx evm confirm-erc20-deposit ethereum [txID] [amount] [Ethereum Ropsten deposit address] --from validator
 ```
-Here, amount should be specific in [token] (depends on what token you are sending).
-(For instance, 1photon = 1000000uphoton,  1axl = 1000000uaxl)
+Здесь количество должно быть указано в [токенах] (зависит от того, какой токен Вы отправляете).
+(Например, 1photon = 1000000uphoton,  1axl = 1000000uaxl)
 
-[txID] is the Ethereum Ropsten transaction hash of your burn transaction from step 2.
+[txID] - это хэш Вашей транзакции в сети Ethereum Ropsten, который Вы получили на 2-м шаге.
 
-Example:
+Например:
 ```bash
 axelard tx evm confirm-erc20-deposit ethereum 0xb82e454a273cb32ed45a435767982293c12bf099ba419badc0a728e731f5825e 1000000 0x5CFEcE3b659e657E02e31d864ef0adE028a42a8E --from validator
 ```
 
-Wait for transaction to be confirmed.
-You can search it using `docker logs -f axelar-core 2>&1 | grep -a -e "deposit confirmation"`.
+Дождитесь подтверждения транзакции.
+Вы можете найти её, используя команду `docker logs -f axelar-core 2>&1 | grep -a -e "deposit confirmation"`.
 
-4. Execute pending deposit on Axelar Network
+4. Выполнить отложенное пополнение в сети Axelar
 ```bash
 axelard tx axelarnet execute-pending-transfers --from validator --gas auto --gas-adjustment 1.2
 ```
-5. Verify you received the funds
+5. Убедитесь, что Вы получили средства
 ```bash
 axelard q bank balances $(axelard keys show validator -a)
 ```
 
-You should see the deposited token in your balance (minus gas fees)
+Вы должны увидеть полученные токены на балансе Вашего кошелька (минус платы за газ)
 
