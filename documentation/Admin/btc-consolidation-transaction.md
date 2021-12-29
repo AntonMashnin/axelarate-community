@@ -4,23 +4,23 @@ sidebar_position: 1
 sidebar_label: Bitcoin Consolidation Transaction
 slug: /btc-consolidation-tx
 ---
-# Master-Key Consolidation Transaction
+# Транзакция консолидации Мастер-Ключ
 
 ```
-Master Key Consolidation is the process of moving funds from primary/master to secondary
+Консолидация мастер-ключа - это процесс перевода средств с главного/мастер счёта на вспомогательный.
 ```
 
-In order to perform master-key consolidation transaction on the Bitcoin network, we need to make sure
+Чтобы выполнить транзакцию консолидации мастер-ключ в сети Биткойн, мы должны убедиться, что
 
-1. There are some master-key UTXOs to spend
-2. All external keys are registered
+1. Есть несколько UTXO с мастер-ключом, которые можно потратить
+2. Все внешние ключи зарегистрированы
 
-In order to send some coin from the secondary key to the master key, we need to use the `--master-key-amount` flag when
-performing `create-pending-transfers-tx`.
+Чтобы отправить нескольком монет со вторичного ключа на главный ключ, нам нужно использовать флаг `--master-key-amount` при
+выполнении `create-pending-transfers-tx`.
 
-Next, we'll need to generate and register external keys.
+Далее нам нужно сгенерировать и зарегистрировать внешние ключи.
 
-Generation can be handled by KMS -- the following command will write a WIF-encoded private key to disk (to be used by
+Генерация может осуществляться с помощью KMS -- the following command will write a WIF-encoded private key to disk (to be used by
 the signing process) and print a hex-encoded public key to stdout (to register with Axelar).
 
 NOTE: Be sure to preserve private keys produced by each iteration so they can be used during key signing.
