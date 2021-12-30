@@ -4,10 +4,10 @@ sidebar_position: 1
 sidebar_label: Bitcoin Key Rotation
 slug: /btc-key-rotation
 ---
-# Master/Secondary Key Rotation
-In order to rotate to a new key, you basically need to trigger a consolidation transaction sending the change amount to a master/secondary key that is different than the current one. Check the steps at [Bitcoin Consolidation Transaction](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/btc-consolidation-transaction.md), and make sure to use a different master/secondary key ID at step 1.
+# Ротация Первичного/Вторичного Ключа
+Чтобы перейти на новый ключ, Вам нужно запустить транзакцию консолидации, отправив сумму изменения на главный/вторичный ключ, который отличается от текущего. Проверьте шаги [Транзакция Биткоин Консолидации](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/btc-consolidation-transaction.md), и убедитесь, что на шаге 1 используется другой идентификатор первичного/вторичного ключа.
 
-Note that for axelar-core version <=0.7.x, manual key rotation has to be triggered after the bitcoin consolidation transaction is submitted.
+Обратите внимание, что для версии axelar-core <= 0.7.x ручная ротация ключей должна запускаться после отправки транзакции биткоин консолидации.
 ```
 axelard tx tss rotate bitcoin {key role, e.g. secondary or master} {a key ID} --from validator --gas auto --gas-adjustment 1.2
 ```
