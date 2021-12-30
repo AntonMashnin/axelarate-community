@@ -20,16 +20,15 @@ slug: /btc-consolidation-tx
 
 Далее нам нужно сгенерировать и зарегистрировать внешние ключи.
 
-Генерация может осуществляться с помощью KMS -- the following command will write a WIF-encoded private key to disk (to be used by
-the signing process) and print a hex-encoded public key to stdout (to register with Axelar).
+Генерация может осуществляться с помощью KMS -- следующая команда выполнит запись на диск закрытого ключа в кодировке WIF (будет использоваться для подписи) и выведит открытый ключ в шестнадцатеричной кодировке (для регистрации в Axelar).
 
-NOTE: Be sure to preserve private keys produced by each iteration so they can be used during key signing.
+ПРИМЕЧАНИЕ: Обязательно сохраняйте закрытые ключи, созданные при каждой итерации, чтобы их можно было использовать во время подписания ключей.
 
 ```
 axelar-kms bitcoin keygen --force
 ```
 
-In order to register external keys, we need to use command
+Для регистрации внешних ключей, нам нужно использовать команду
 
 ```
 axelard tx bitcoin register-external-keys \
@@ -42,109 +41,104 @@ axelard tx bitcoin register-external-keys \
   --from validator -y -b block --gas auto --gas-adjustment 1.2
 ```
 
-After above setup, we can run commands `create-master-tx`, `sign-tx`, and `submit-external-signature`, then submit the
-signed transaction to the Bitcoin network to complete the consolidation. A query command `latest-tx` is also available
-to check the status of the transaction, and it's ready to be sent when the status field is set to `TX_STATUS_SIGNED`.
+После выполнения вышеуказанной настройки мы можем выполнить команды `create-master-tx`, `sign-tx`, и `submit-external-signature`, затем отправьте подписанную транзакцию в сеть Биткойн для завершения консолидации. Также доступна команда запроса `latest-tx`
+для проверки статуса транзакции, и он готов к отправке, когда в поле статуса установлено значение `TX_STATUS_SIGNED`.
 
-1. In case the secondary key doesn't have enough funds to process individual withdrawals, you might want to send some funds to it from the master. First look for the current secondary key.
+1. В случае, если на вторичном ключе недостаточно средств для обработки индивидуальных выводов, Вы возможно захотите отправить на него немного средств с мастера. Сначала найдите текущий вторичный ключ.
    ```
    axelard q bitcoin consolidation-address --key-role secondary
    ```
 
-   Get the address and check the balance in the most recent transaction on bitcoin explorer like blockstream.info.
-   Following the similar process, but replace `secondary` with `master` and check its balance. 
+   Получите адрес и проверьте баланс последний транзакции в биткоин проводнике: blockstream.info.
+   Следуйте аналогичному процессу, но замените `вторичный` на `мастер` и проверьте его баланс. 
 
-   If most of the funds are on the `master` key, then send some (e.g 0.005) to the secondary key appending flag `--secondary-key-amount 0.005btc` to the command below. 
+   Если большая часть средств находится на `основном` ключе, тогда отправьте немного (например, 0,005) на вторичный ключ используя флаг `--secondary-key-amount 0.005btc` как показано в команде ниже:
 
-   Create a new key. The new_key_id should be a sequence considering the output of the consolidation-address query above. So for example, the key_id from that query is `btc-primary-2`, you would choose `btc-primary-3` for the new_key_id.
+   Создайте новый ключ. New_key_id должен быть последовательностью, учитывающей вывод вышеуказанного запроса адреса консолидации. Например, key_id из этого запроса `btc-primary-2`, Вм нужно выбрать `btc-primary-3` для new_key_id.
 
    ```
    axelard tx tss start-keygen --id {new_key_id} --from validator --gas auto --gas-adjustment 1.2
    ```
 
-   Check that the status of the key
+  Проверьте, статус ключа
    ```
    axelard q tss key <new_key_id>
    ```
 
-   Create a master-key transaction and use the flag  `--secondary-key-amount` to send most coins back to the
-   secondary key as described above.
+   Создайте транзакцию с master-key используя флаг `--secondary-key-amount` чтобы отправить большинство монет обратно во
+    вторичный ключ, как описано выше.
 
-   Note that you need to specify which key to use for sending the change output. If the key specified
-   does not match the current master key, a key assignment will occur at transaction creation and key rotation will
-   occur after signing is finished. The command would fail if such a transaction is already created and is waiting to be
-   signed. In such case, please wait until the system is available again.
+   Обратите внимание, что Вам нужно указать, какой ключ использовать для отправки полученных изменений. Если указанный ключ не соответствует текущему мастер-ключу, 
+   присваивание ключа произойдет при создании транзакции и ротация ключей произойдет после завершения подписи. 
+   Команда завершится ошибкой, если такая транзакция уже создана и ожидает завершения
+   подписи. В таком случае подождите, пока система снова не станет доступной.
     ```
     axelard tx bitcoin create-master-tx {a key ID} --from validator --gas auto --gas-adjustment 1.2
     ```
-2. Generate external signatures for the transaction we just created.
+2. Сгенерируйте внешние подписи для только что созданной транзакции.
 
-    1. #### Get TX json from axelard
-       _We currently hold at least 3 of 6 multisig keys so there is no need to collect signatures from external parties
-       at this time._
+    1. #### Получить TX json от axelard
+       _В настоящее время у нас есть как минимум 3 из 6 ключей с несколькими подписями, поэтому в настоящее время нет необходимости собирать подписи от внешних сторон._
        ```
        axelard q bitcoin latest-tx --output json master
        ```
 
-    2. #### Sign TX json with KMS using $HOME/.axelar/private.key
-       _Repeat the following for each multisig key that we are holding (only 3 are necessary), substituting the private
-       key as necessary._
+    2. #### Подпишите TX json с помощью KMS, используя $HOME/.axelar/private.key
+       _Повторите следующее для каждого multisig ключа, который мы держим (необходимо только 3), при необходимости подставляя закрытый ключ._
 
        ```
        axelar-kms bitcoin sign {tx-json}
        ```
-4. Submit external signatures for the transaction we just created.
+4. Отправьте внешние подписи для только что созданной транзакции.
     ```
     axelard tx bitcoin submit-external-signature {external key name} {external signature in hex} {sighash in hex} --from validator --gas auto --gas-adjustment 1.2
     ```
-   Note that this needs to be done for 3 external keys by default.
+  Обратите внимание, что по умолчанию это нужно сделать для 3 внешних ключей.
 
-5. Trigger signing of the master-key transaction we just created.
+5. Подписание триггера только что созданной транзакции с мастер-ключом.
 
   ```
   axelard tx bitcoin sign-tx master --from validator --gas auto --gas-adjustment 1.2
   ```
 
-3. Wait until the transaction is signed. This would typically take ~10 Axelar blocks.
+3. Подождите, пока транзакция не будет подписана. Обычно это занимает ~ 10 Axelar блоков.
 
   ```
   axelard q bitcoin latest-tx master
   ```
 
-- If the above query returns `TX_STATUS_SIGNED` as `status`, the transaction is ready to be broadcast to the Bitcoin
-  network.
-- If the above query returns `TX_STATUS_ABORTED` as `status`, signing must have failed for some reason. Possible reasons
-  include, but not limited to
-    - Signing timed out due to various validator issues
-    - Signing could not start due to validator(s) failing to claim TSS availability
+- Если вышеуказанный запрос вернет `TX_STATUS_SIGNED` в качестве `status(а)`, транзакция готова для передачи в сеть Биткойн
+  
+- Если вышеуказанный запрос вернет `TX_STATUS_ABORTED` в качестве `status(а)`, подпись по какой-то причине была звершена с ошибкой. Возможными причинами
+  могут быть, но не ограничивается только этим списком:
+    - Время подписи истекло из-за различных проблем с валидатором
+    - Не удалось начать процесс подписания из-за того, что валидаторы не заявили о доступности TSS
 
-In all cases, the signing can be re-tried by calling `sign-tx` again as in step 2 again.
+Во всех случаях подпись можно повторить, снова вызвав `sign-tx`, как указано в шаге 2.
 
-4. Submit the signed transaction to Bitcoin network
+4. Отправьте подписанную транзакцию в сеть Биткойн
 
   ```
   axelard q bitcoin latest-tx master
-  -> the tx field contains a hex-encoded representation of the signed Bitcoin transaction
+  -> поле tx содержит шестнадцатеричное представление подписанной биткойн-транзакции
   ```
 
-You can then copy the `tx` field and send it to the Bitcoin testnet with bitcoin's JSON-RPC API, or a web interface such
-as https://live.blockcypher.com/btc/pushtx/. Note to select Bitcoin testnet as the chain, if you are using the
-Blockcypher interface.
+Затем Вы можете скопировать поле `tx` и отправить его в тестовую Биткойн сеть с помощью биткоин JSON-RPC API, или черз веб-интерфейс, такой как https://live.blockcypher.com/btc/pushtx/. Примечание выбирете тестовую сеть Биткойн в качестве цепи, если Вы используете интерфейс Blockcypher.
 
-# Secondary-Key Consolidation Transaction (Withdrawal)
+# Транзакция консолидации вторичного ключа (вывод)
 
-In order to handle user withdrawals on the Bitcoin network, we need to trigger the secondary-key consolidation
-transaction. To to so, we need to use commands `create-pending-transfers-tx`and `sign-tx`, and then submit the signed
-transaction to the Bitcoin network. A query command `latest-tx` is also available to check the status of the
-transaction, and it's ready to be sent when the status field is set to `TX_STATUS_SIGNED`.
+Для обработки вывода средств пользователями в сети Биткойн, нам нужно инициировать транзакцию консолидации вторичного ключа. 
+Для этого нам нужно использовать команды `create-pending-transfers-tx` и `sign-tx`, а затем отправьте подписанную транзакцию 
+в сеть Биткойн. Также доступна команда запроса `latest-tx` для проверки статуса транзакции, 
+она готова к отправке, в таком случае в поле статуса будет установлено значение TX_STATUS_SIGNED.
 
-1. Create a secondary-key transaction to handle all pending transfers to Bitcoin. Note that you need to specify which
-   key to use for sending the change output. If the key specified does not match the current secondary key, a key
-   assignment will occur at transaction creation and key rotation will occur after signing is finished. The command
-   would fail if such a transaction is already created and is waiting to be signed. In such case, please wait until the
-   system is available again.
+1. Создайте транзакцию с вторичным ключом для обработки всех ожидающих переводов в биткойн. Обратите внимание, что Вам нужно указать, 
+   какой ключ использовать для отправки вывода изменений. Если указанный ключ не соответствует текущему вторичному ключу, присвоение 
+   ключей произойдет при создании транзакции, а ротация ключей произойдет после завершения подписи. Команда завершится
+   ошибкой, если такая транзакция уже создана и ожидает подписания. В таком случае подождите, пока
+   система снова не станет доступной.
 
-   Usually, we want to first find the current Bitcoin Secondary Key ID, then create the secondary key transaction.
+   Обычно мы хотим сначала найти текущий идентификатор вторичного биткоин ключа, а затем создать транзакцию с вторичным ключом.
 
   ```
   axelard q tss key-id bitcoin secondary
@@ -154,34 +148,32 @@ transaction, and it's ready to be sent when the status field is set to `TX_STATU
   axelard tx bitcoin create-pending-transfers-tx {a key ID} --from validator --gas auto --gas-adjustment 1.2
   ```
 
-2. Trigger signing of the secondary-key transaction we just created.
+2. Подписание триггера только что созданной транзакции с вторичным ключом.
 
   ```
   axelard tx bitcoin sign-tx secondary --from validator --gas auto --gas-adjustment 1.2
   ```
 
-3. Wait until the transaction is signed. This would typically take ~10 Axelar blocks.
+3. Подождите, пока транзакция не будет подписана. Обычно это занимает ~ 10 Axelar блоков.
 
   ```
   axelard q bitcoin latest-tx secondary
   ```
 
-- If the above query returns `TX_STATUS_SIGNED` as `status`, the transaction is ready to be broadcast to the Bitcoin
-  network.
-- If the above query returns `TX_STATUS_ABORTED` as `status`, signing must have failed for some reason. Possible reasons
-  include, but not limited to
-    - Signing timed out due to various validator issues
-    - Signing could not start due to validator(s) failing to claim TSS availability
+- Если вышеуказанный запрос вернет `TX_STATUS_SIGNED` в качестве `status(а)`, транзакция готова к передачи в Биткоин 
+  сеть.
+- Если вышеуказанный запрос вернет `TX_STATUS_ABORTED` в качестве `status(а)`, выполнить подпись не удалось по какой-то из причин. Возможными причинами
+  могут быть, но не ограничивается только этим списком:
+    - Время подписи истекло из-за различных проблем с валидатором
+    - Не удалось начать процесс подписания из-за того, что валидаторы не заявили о доступности TSS
 
-In all cases, the signing can be re-tried by calling `sign-tx` again as in step 2 again.
+Во всех случаях подпись можно повторить, снова вызвав `sign-tx`, как указано в шаге 2.
 
-4. Submit the signed transaction to Bitcoin network
+4. Отправьте подписанную транзакцию в Биткоин сеть 
 
   ```
   axelard q bitcoin latest-tx secondary
-  -> the tx field contains a hex-encoded representation of the signed Bitcoin transaction
+  -> поле tx содержит шестнадцатеричное представление подписанной биткойн-транзакции
   ```
 
-You can then copy the `tx` field and send it to the Bitcoin testnet with bitcoin's JSON-RPC API, or a web interface such
-as https://live.blockcypher.com/btc/pushtx/. Note to select Bitcoin testnet as the chain, if you are using the
-Blockcypher interface.
+Затем Вы можете скопировать поле `tx` и отправить его в тестовую Биткойн сеть с помощью биткоин JSON-RPC API, или черз веб-интерфейс, такой как https://live.blockcypher.com/btc/pushtx/. Примечание выбирете тестовую сеть Биткойн в качестве цепи, если Вы используете интерфейс Blockcypher.
