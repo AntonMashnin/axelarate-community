@@ -1,30 +1,30 @@
 ---
 id: eth-btc
 sidebar_position: 7
-sidebar_label: Eth Btc Node Setup
+sidebar_label: Eth Btc Настройка Ноды
 slug: /eth-btc
 ---
-# Set up Bitcoin and Ethereum nodes
-This tutorial helps you set up a `Bitcoin testnet` and `Ethereum Ropsten testnet` node on your local machine using `Bitcoin Core` and `Geth`. In particular, this is useful for completing `Exercise 3` when you do not have existing testnet nodes, or as a reference for how to configure your nodes running on a different setup.
+# Настройка Bitcoin и Ethereum нод
+Это руководство поможет Вам настроить `тестовую сеть Bitcoin` и `тестовую сеть Ethereum Ropsten` на Вашем локальном компьютере с помощью `Bitcoin Core` и `Geth`. В частности, это полезно для выполнения `Упражнения 3`, когда у Вас нет существующих узлов тестовой сети, или как справочник о том, как настроить Ваши узлы, работающие в другой конфигурации.
 
-## Bitcoin testnet node
-Set up a Bitcoin testnet node using `bitcoind` from `Bitcoin Core`.
+## Bitcoin тестнет нода
+Настройте узел тестовой сети Биткоин, используя `bitcoind` из `Bitcoin Core`.
 
-1. Download Bitcoin Core.
+1. Загрузите Bitcoin Core.
 
-Find the installation guide for your machine from the [Github Repo](https://github.com/bitcoin/bitcoin/tree/master/doc). Follow the instructions to download the binary executable commands, including `bitcoind`. Do not use the `bitcoind` command to start downloading the blockchain until later.
+Найдите руководство по установке для своей машины в [Github репозитории](https://github.com/bitcoin/bitcoin/tree/master/doc). Следуйте инструкциям по загрузке двоичных команд, включая `bitcoind`. Не используйте `bitcoind` команду для того чтобы начать загрузку блокчейна.
 
-2. Find the directory where the `bitcoind` command executable is located. This is typically in the cloned bitcoin repo, under the `src` folder. `cd` into the directory so you can use the `bitcoind` command.
+2. Найдите директорию в которой расположен бинарный файл `bitcoind`. По-умолчанию он находится в клонированном bitcoin репозитории, в `src` папке. Выполните переход `cd` в каталог, чтобы Вы могли использовать `bitcoind` команду.
 
-3. Check that `bitcoind` is installed properly
+3. Убедитесь, что `bitcoind` установлен правильно
 
 ```bash
 ./bitcoind --help
 ```
 
-4. [Find the default data directory](https://en.bitcoin.it/wiki/Data_directory) of your Bitcoin node. Create a file called `bitcoin.conf` inside this directory.
+4. [Найдите каталог данных по умолчанию](https://en.bitcoin.it/wiki/Data_directory) Вашей Bitcoin ноды. Создайте внутри этого каталога файл с именем `bitcoin.conf`.
 
-eg) For macOS
+например) Для macOS
 
 ```bash
 mkdir -p "/Users/jacky/Library/Application Support/Bitcoin"
@@ -32,68 +32,68 @@ touch "/Users/jacky/Library/Application Support/Bitcoin/bitcoin.conf"
 chmod 600 "/Users/jacky/Library/Application Support/Bitcoin/bitcoin.conf"
 ```
 
-Use the above commands and change the folder path to be the data directory of your system.
+Используйте приведенные выше команды и измените путь к папке, чтобы он был каталогом данных Вашей системы.
 
-5. Generate the Bitcoin node configuration file used by `bitcoind`.
+5. Создайте файл конфигурации Биткоин узла, использая `bitcoind`.
 
-Use [this tool](https://jlopp.github.io/bitcoin-core-config-generator/) to create the contents of your `bitcoin.conf` file.
-Note: The following settings are general guidelines that work for most setups. Your setup may require some changes.
+Используйте [эту утилиту](https://jlopp.github.io/bitcoin-core-config-generator/) для создания содержимого Вашего файла `bitcoin.conf`.
+Примечание. Следующие настройки являются общими рекомендациями, которые подходят для большинства настроек. В Вашей настройке могут потребоваться некоторые изменения.
 
-Set the following:
-* At the top, set your operating system.
-* Under `Bitcoin Core`, enable `Daemon Mode`.
-* Under `RPC API`, enable `RPC Server`.
-* Under `RPC API`, look for `RPC Auth`. Follow the link and provide a username and password. Write down the username and password as you will need it later. Copy the generated value and paste it back into the `RPC Auth` field.
-* Under `RPC API`, set `RPC Allow IP Address` as `0.0.0.0/0`.
-* Under `RPC API`, set `Bind RPC Address` as the public IP address of the bitcoin node.
+Установите следующее:
+* В первую очередь установите Вашу операционную систему.
+* В разделе `Bitcoin Core` включите `Режим демона`.
+* В разделе `RPC API`, включите `RPC Server`.
+* В разделе `RPC API`, найдите `RPC Auth`. Перейдите по ссылке и укажите имя пользователя и пароль. Запишите имя пользователя и пароль, они понадобятся Вам позже. Скопируйте сгенерированное значение и вставьте его обратно в поле `RPC Auth`.
+* В разделе `RPC API`, установите `RPC Разрешить IP-адрес` as `0.0.0.0/0`.
+* В разделе `RPC API`, установите `Bind RPC Address` как общедоступный IP-адрес для биткоин узла.
 
-Copy the contents of the generated `bitcoin.conf` file and paste it into the file you created in the last step.
+Скопируйте содержимое сгенерированного файла `bitcoin.conf` и вставьте его в файл, который Вы создали на последнем шаге.
 
-Under `# Options only for testnet [test]` add the following two lines, then save.
+В разделе `# Options only for testnet [test]` добавьте следующие две строки и сохраните изменения.
 
 ```bash
 # Listen for JSON-RPC connections on this port
 rpcport=8332
 ```
 
-6. Start downloading the bitcoin testnet chain. Go back to the directory where the `bitcoind` binary is located to run the following.
+6. Начните загрузку цепочки тестовой сети Биткойн. Вернитесь в каталог, где находится двоичный файл `bitcoind`, чтобы выполнить следующую команду.
 
 ```bash
 ./bitcoind -testnet
 ```
 
-You should see a message `Bitcoin Core starting`. Wait for the Bitcoin testnet chain to download, this could take a few hours.
-If you want to look at the progress, find the `debug.log` file within the default Bitcoin data directory.
+Вы должны увидеть сообщение  `Bitcoin Core starting`. Подождите, пока загрузится цепочка тестовой сети Биткойн, это может занять несколько часов.
+Если вы хотите следить за прогрессом, найдите файл `debug.log` в каталоге данных Биткойна по умолчанию.
 
-eg) For macOS, you can run
+например) Для macOS вы можете запустить
 ```bash
 tail -10 ~/Library/Application\ Support/Bitcoin/testnet3/debug.log
 ```
 
-To stop the Bitcoin testnet node from downloading and syncing
+Чтобы остановить загрузку и синхронизацию узла тестовой сети Биткойн
 ```bash
 ./bitcoin-cli -testnet stop
 ```
 
-7. Find the RPC endpoint for Axelar to connect.
+7. Найдите конечную точку RPC для подключения Axelar.
 
-If you used the above settings, your RPC endpoint should be 
+Если Вы использовали указанные выше настройки, Ваша конечная точка RPC должна быть
 
 ```bash
 http://{USERNAME}:{PASSWORD}@host.docker.internal:8332
 ```
 
-eg)
+например)
 
 ```bash
 http://jacky:mypassword@host.docker.internal:8332
 ```
 
-The `username` and `password` fields are the values you provided to the `RPC Auth` setting in step 5. Write down the Bitcoin RPC endpoint as you will need it later.
+Поля `имя пользователя` и `пароль` это значения, которые вы указали для параметра `RPC Auth` на шаге 5. Запишите конечную точку Bitcoin RPC, так как она Вам понадобится позже.
 
-8. OPTIONAL: Test your Bitcoin node.
+8. ДОПОЛНИТЕЛЬНО: Протестируйте свой биткойн-узел.
 
-After your Bitcoin node is fully synced, you can send an RPC request to it using cURL. Use the following and replace the RPC endpoint username and password.
+После того, как Ваш биткойн-узел полностью синхронизирован, Вы можете отправить ему RPC-запрос с помощью cURL. Используйте следующее и замените имя пользователя и пароль конечной точки RPC.
 
 ```bash
 curl -X POST http://jacky:mypassword@localhost:8332 \
@@ -102,57 +102,58 @@ curl -X POST http://jacky:mypassword@localhost:8332 \
 ```
 
 
-## Ethereum Ropsten testnet node
-Set up an Ethereum Ropsten testnet node using `Geth`.
+## Ethereum Ropsten тестнет нода
+Настройте узел тестовой сети Ethereum Ropsten с помощью `Geth`.
 
-1. [Install Geth](https://geth.ethereum.org/docs/install-and-build/installing-geth).
+1. [Установите Geth](https://geth.ethereum.org/docs/install-and-build/installing-geth).
 
-2. Start downloading the Ethereum Ropsten testnet chain. This may take many hours.
+2. Начните загрузку цепочки тестовой сети Ethereum Ropsten. Это может занять много часов.
 
 ```bash
 geth --ropsten --syncmode "snap" --http --http.vhosts "*"
 ```
 
-First, the majority of the blocks will be downloaded. Then your node will synchronize as the last few blocks catch up. This second part may take a long time. 
+Сначала будет загружено большинство блоков. Затем Ваш узел будет синхронизироваться по мере того, как последние несколько блоков будут до синхронизированы. 
+Эта вторая часть может занять много времени.
 
-To stop the node from downloading, press `Control C`.
+Чтобы остановить загрузку узла, нажмите `Control C`.
 
-3. Check the status of your node.
+3. Проверьте статус Вашего узла.
 
-First find the path to your node's `ipc` which is located in 
+Сначала найдите путь к Вашему `ipc` узлу который расположен в
 ```bash
 {Path to Default Ethereum Data Storage}/ropsten/geth.ipc
 ```
 
-eg) on macOS
+например) на macOS
 
 ```bash
 /Users/jacky/Library/Ethereum/ropsten/geth.ipc
 ```
 
-Open a new terminal and run the following. Replace the `ipc` path with your own.
+Откройте новую консоль и запустите следующее. Замените `ipc` путь на тот который используется в Вашей системе.
 ```bash
 geth attach ipc:/Users/jacky/Library/Ethereum/ropsten/geth.ipc
 ```
 
-Check the status of your Ethereum node.
+Проверьте статус вашего узла Ethereum.
 ```bash
 eth.syncing
 ```
 
-4. Find the RPC endpoint for Axelar to connect.
+4. Найдите конечную точку RPC для подключения Axelar.
 
-If you used the above settings, your RPC endpoint should be 
+Если Вы использовали указанные Выше настройки, Ваша конечная точка RPC должна быть 
 
 ```bash
 http://host.docker.internal:8545
 ```
 
-Write down the RPC endpoint, you will need it later.
+Запишите конечную точку RPC, она Вам понадобится позже.
 
-5. OPTIONAL: Test your Ethereum node.
+5. ДОПОЛНИТЕЛЬНО: Протестируйте свой узел Ethereum.
 
-After your Ethereum node is fully synced, you can send an RPC request to it using cURL. 
+После того, как Ваш узел Ethereum будет полностью синхронизирован, Вы можете отправить ему запрос RPC с помощью cURL.
 
 ```bash
 curl -X POST http://localhost:8545 \
