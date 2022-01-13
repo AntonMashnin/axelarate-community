@@ -1,77 +1,76 @@
 ---
 id: join-as-validator-docker
 sidebar_position: 3
-sidebar_label: Joining as Validator using docker
+sidebar_label: Подключение к сети Axelar в качестве валидатора с использованием докера
 slug: /join-as-validator-docker
 ---
-# Running a Validator on the Axelar Network (Docker)
-Join and leave the Axelar Network as a validator node.
+# Запуск валидатора в сети Axelar (с использованием Docker контейнера)
+Присоединяйтесь и выходите из сети Axelar в качестве валидатора сети.
 
-Convert an existing Axelar Network node into a validator by attaching Bitcoin and Ethereum nodes and staking tokens. A validator participates in block creation, transaction signing, and voting.
+Преобразуйте существующий узел Axelar Network в валидатор, подключив узлы Биткойн и Эфириум и разместив токены. Валидатор участвует в создании блока, подписании транзакций и голосовании.
 
-The exercise can be completed using a docker based setup as well as using a binary setup. It is important that you remain consistent. i.e if you setup node using binary, complete the exercise following the binary instructions and if you setup the node using docker, complete this exercise following instructions for docker.
+Задание можно выполнить с помощью установки на основе докера, а также с помощью установки из исходного кода. Важно, чтобы вы оставались последовательными, т.е. если Вы настраиваете узел с помощью установки из исходного кода, выполните задание, следуя инструкциям которая включает в себя шаги установки из исходного кода, а если Вы настраиваете узел с помощью докера, выполните это задания, следуя инструкциям для установки докера.
 
-## Level
-Advanced
+## Уровень
+Продвинутый
 
-## Disclaimer
-:::warning
-Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+## Отказ от ответственности
+:::предупреждение Axelar Network находится в стадии разработки. Ни в коем случае нельзя передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять. Axelar не несет ответственности за потерянные активы, или их заморозку или за токены которые не подлежат восстановлению в любом состоянии. Если Вы обнаружите проблему,пожалуйста, сообщите о ней используя данный репозиторий, следуя шаблону. 
 :::
 
-## Prerequisites
-- Complete all steps from [Setup with Docker](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/docs/setup-with-docker.md) or [Setup with Binaries](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/docs/setup-with-binaries.md)
-- While the network is in development, check in and receive an 'okay' from a testnet moderator or Axelar team member before starting
-- Ensure you have the right tag checked out for the axelarate-community repo, check in the testnet-releases.md
-- Minimum validator hardware requirements: 16 cores, 16GB RAM, 1.5 TB drive. Recommended 32 cores, 32 GB RAM, 2 TB+ drive
+## Предварительные требования
+- Выполните все шаги из этого руководства [Установка с помощью Docker(a)](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/docs/setup-with-docker.md) или [Установка из исходного кода](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/docs/setup-with-binaries.md)
+- Пока сеть находится в разработке, зарегистрируйтесь и получите 'okay' от модератора тестовой сети или члена команды Axelar перед тем как начнёте выполнять настройку
+- Убедитесь, что Вы выбрали правильный тег для репозитория axelarate-community, проверьте testnet-releases.md
+- Минимальные аппаратные требования валидатора: 16 ядер, 16 ГБ ОЗУ, 1,5 ТБ диск. Рекомендуемые 32 ядра, 32 ГБ ОЗУ, 2 ТБ+ диск
 
-## Useful links
-- [Extra commands to query Axelar Network state](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/docs/extra-commands.md)
+## Полезные ссылки
+- [Дополнительные команды для получения состояния сети Axelar](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/docs/extra-commands.md)
 
-## Joining the Axelar testnet
-Follow the instructions in `README.md` to make sure your node is up to date and you received some test coins to your validator account.
+## Присоединитесь к тестовой сети Axelar
+Следуйте инструкциям в README.md, чтобы убедиться, что Ваш узел обновлен и Вы получили несколько тестовых монет на свою учетную запись валидатора.
 
-## Set up Bitcoin and Ethereum nodes
-As an Axelar Network validator, your Axelar node will vote on the status of Bitcoin and Ethereum transactions. To do so, you must first set up and configure your Bitcoin and Ethereum testnet nodes, and then provide the RPC endpoints to Axelar.
+## Настройте узлы Биткойн и Эфириум
+Как валидатор Axelar Network, ваш узел Axelar будет голосовать за статус транзакций Биткойн и Эфириум. Для этого Вы должны сначала установить и настроить узлы тестовой сети Биткойн и Эфириум, а затем предоставить конечные точки RPC для Axelar.
 
-If you do not already have a Bitcoin testnet node and Ethereum Ropsten testnet node running, you can follow the [instructions](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/eth-btc-node-setup.md) to set up and configure them, then skip to the next section `Connect Bitcoin and Ethereum nodes to Axelar`. You can also set up an alternative configuration of your choice.
+Если у Вас еще нет узла тестовой сети Биткойн и узла тестовой сети Ethereum Ropsten, Вы можете воспользоваться руководством [инструкция](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/eth-btc-node-setup.md) чтобы установить и настроить их, затем перейдите к следующему разделу `Connect Bitcoin and Ethereum nodes to Axelar`. Вы также можете настроить альтернативную конфигурацию на Ваш выбор.
 
-Bitcoin and Ethereum node configuration will vary for different systems. Detailed configuration instructions for a local machine running `macOS` `Bitcoin Core` and `Geth` can be found [here](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/eth-btc-node-setup.md) and used as a reference.
+Конфигурация узла Биткойн и Эфириум будет различаться для разных систем. Подробные инструкции по настройке для локальной машины, работающей на `macOS` `Bitcoin Core` и `Geth` можно найти [здесь](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/eth-btc-node-setup.md) и используется как ссылка.
 
 
-### Bitcoin testnet node configuration
+### Настройка Bitcoin testnet ноды
 
-1. Ensure your Bitcoin testnet node is up to date. Stop the node before making any configuration changes.
+1. Убедитесь, что Ваш узел тестовой сети Биткойн обновлен. Остановите узел, прежде чем вносить какие-либо изменения в конфигурацию.
 
-2. Enable the following configurations.
+2. Включите следующие настройки.
 
-* Enable the `RPC Server`.
-* Generate the `RPC Auth` value by supplying a username and password (make sure to save the username and password somewhere, you will need it later). An example `RPC Auth` value is
+* Включите  `RPC Server`.
+* Сгенерируйте `RPC Auth` значение, указав имя пользователя и пароль (не забудьте где-нибудь сохранить имя пользователя и пароль, они понадобятся Вам позже). Например `RPC Auth` значение
 ```bash
 rpcauth=jacky:a8e51174a095fe52491f4f487d41053a$9336f388b175ef3a8a63b248446aa3ccd0c8644bbb85ab005d447e164b7e9712
 ```
-* Set `RPC Allow IP Address` as `0.0.0.0/0`.
+* Установите `Разрешённый RPC IP адрес` как `0.0.0.0/0`.
 
-3. Find the RPC endpoint of your Bitcoin node for Axelar to connect to.
+3. Найдите конечную точку RPC вашего биткойн-узла, к которой Axelar подключится.
 
-Your Bitcoin testnet node's RPC endpoint should be
+Конечная RPC точка Вашего узла тестовой сети Биткойн должна быть
 
 ```bash
 http://{USERNAME}:{PASSWORD}@{IPADDRESS}:{PORT}
 ```
 
-If your node is running using docker containers, use `host.docker.internal` as the `IPADDRESS` since Axelar core will be running in a docker container.
-eg)
+Если Ваш узел работает с использованием докер контейнера, используйте `host.docker.internal` в качестве `IPADDRESS` поскольку ядро Axelar будет работать в докер контейнере.
+т.е)
 
 ```bash
 http://jacky:mypassword@host.docker.internal:18332
 ```
 
-The `username` and `password` fields are the values you provided to the `RPC Auth` setting earlier. Write down the Bitcoin RPC endpoint as you will need it later.
+Имя пользователя и пароль `username`/ `password` поля — это значения, которые Вы указали ранее для параметра `RPC Auth`. Запишите конечную точку Bitcoin RPC, так как она понадобится Вам позже.
 
-4. OPTIONAL: Test your Bitcoin node.
+4. НЕОБЯЗАТЕЛЬНО: проверьте свой биткойн-узел.
 
-To test your setup, you can send an RPC request to your Bitcoin node using cURL. Use the following and replace the RPC endpoint.
+Чтобы проверить свои настройки, Вы можете отправить запрос RPC на свой биткойн-узел, используя cURL. Используйте следующее и замените конечную точку RPC.
 
 ```bash
 curl -X POST http://jacky:mypassword@localhost:8332 \
@@ -80,34 +79,34 @@ curl -X POST http://jacky:mypassword@localhost:8332 \
 ```
 
 
-### Ethereum Ropsten testnet node configuration
+### Конфигурация узла тестовой сети Ethereum Ropsten
 
-1. Ensure your Ropsten testnet node is up to date. Stop the node before making any configuration changes.
+1. Убедитесь, что ваш узел тестовой сети Ropsten обновлен. Остановите узел, прежде чем вносить какие-либо изменения в конфигурацию.
 
-2. Enable the following configurations.
+2. Включите следующие настройки.
 
-* Enable the `HTTP-RPC Server` for RPC communication.
-* Set `HTTP-RPC virtual address` as `*`
-* Set `HTTP-RPC listening address` as `0.0.0.0`.
+* Включите  `HTTP-RPC Server` для RPC взаимодействия.
+* Установите  `HTTP-RPC virtual address` как `*`
+* Установите `HTTP-RPC listening address` как `0.0.0.0`.
 
-3. Find the RPC endpoint of your Ethereum node for Axelar to connect to.
+3. Найдите конечную точку RPC Вашего биткойн-узла, к которой Axelar подключится.
 
-Your Ethereum Ropsten testnet node's RPC endpoint should be
+Конечная точка RPC Вашего узла тестовой сети Ethereum Ropsten должна быть
 
 ```bash
 http://{IPADDRESS}:{PORT}
 ```
 
-If your node is running using docker, use `host.docker.internal` as the `IPADDRESS`.
-eg)
+Если Ваш узел работает с использованием докера, используйте `host.docker.internal` в качестве `IPADDRESS`.
+т.е)
 
 ```bash
 http://host.docker.internal:8332
 ```
 
-4. OPTIONAL: Test your Ethereum node.
+4. ДОПОЛНИТЕЛЬНО: протестируйте свой узел Ethereum.
 
-To test your setup, you can send an RPC request to your Ethereum node using cURL. Use the following and replace the RPC endpoint.
+Чтобы проверить конфигурацию, Вы можете отправить запрос RPC на свой узел Ethereum, используя cURL. Используйте следующее и замените конечную точку RPC.
 
 ```bash
 curl -X POST http://localhost:8545 \
@@ -116,59 +115,59 @@ curl -X POST http://localhost:8545 \
 ```
 
 
-## Connect Bitcoin and Ethereum nodes to Axelar and Joiing as a validator
+## Подключите узлы Биткойн и Эфириум к Axelar
 
-1. Have an Axelar node fully caught up and running by completing the steps in `README.md`. Ensure you have some testnet coins on your validator address.
+1. Добейтесь, чтобы нода Axelar была полностью настроена и работала, выполнив шаги из файла README.md. Убедитесь, что у Вас есть несколько монет тестовой сети на Вашем адресе валидатора.
 
-2. Stop the Axelar node. Open a new terminal and run
+2. Остановите узел Axelar. Откройте новый терминал и запустите
 
 ```bash
 docker stop $(docker ps -a -q)
 ```
 
-3. Go to your home directory and open `~/axelarate-community/join/config.toml`.
+3. Перейдите в свой домашний каталог и откройте `~/axelarate-community/join/config.toml`.
 
-4. Scroll to the bottom of the file, and look for `##### bitcoin bridge options #####` and `##### EVM bridges options #####`.
+4. Прокрутите файл до конца и найдите  `##### bitcoin bridge options #####` и `##### EVM bridges options #####`.
 
-5. Find the `rpc_addr` line and replace the default RPC URL with the URL of your node, for both Bitcoin and Ethereum. Save the file. This RPC URL was found and written down during the Bitcoin and Ethereum node setup section.
+5. Найдите `rpc_addr` строку и замените URL-адрес RPC по умолчанию на URL-адрес Вашего узла как для биткойнов, так и для Ethereum. Сохраните файл. Этот URL-адрес RPC был найден и записан в разделе настройки узла Биткойн и Эфириум.
 
-6. Start your Axelar node for the changes to take effect. Run the `join/join-testnet.sh` script again, with the same `--axelar-core`, `--tofnd` (and optionally `--root`) parameters as before. Do NOT use the `--reset-chain` flag or your node will have to sync again from the beginning.
+6. Запустите узел Axelar, чтобы изменения вступили в силу. Запустите скрипт  `join/join-testnet.sh` снова с теми же параметрами, что и раньше `--axelar-core`, `--tofnd` (и по желанию `--root`). НЕ используйте `--reset-chain` флаг или Вашему узлу придется снова синхронизироваться с самого начала.
 
 
-## Joining the Network as a Validator
+## Присоединение к сети в качестве валидатора
 
-Here we assume you have a node running using the `join/join-testnet.sh` script.
+Здесь мы предполагаем, что у Вас есть узел, работающий с использованием `join/join-testnet.sh` скрипта.
 
-1. Enter Axelar node CLI
+1. Откройте командную строку Axelar узла
 ```bash
 docker exec -it axelar-core sh
 ```
 
-2. Load funds onto your `validator` account, which you will use later.
+2. Загрузите средства на свой счет `валидатора`, который Вы будете использовать позже.
 
-Find the address with
+Найдите адрес с помощью команды
 
 ```bash
 axelard keys show validator -a
 ```
 
-Go to [Axelar faucet](http://faucet.testnet.axelar.dev/) and get some coins on your validator address.
+Перейдите [Axelar faucet](http://faucet.testnet.axelar.dev/) и получите монеты на свой адрес валидатора.
 
-Check that you received the funds:
+Убедитесь, что Вы получили средства
 
 ```bash
 axelard q bank balances {validator address}
 ```
 
-eg)
+т.е)
 
 ```bash
 axelard q bank balances axelar1p5nl00z6h5fuzyzfylhf8w7g3qj6lmlyryqmhg
 ```
 
-3. Make your `validator` account a validator by staking some coins.
+3. Сделайте свою учетную запись `валидатора` валидатором, застейкав несколько монет.
 
-Use the following command, but change the `amount` to be larger than the minimum stake amount calculated in the last step. Remember that this is actually denominated in `uaxl`. Also change the `moniker` to be a descriptive nickname for your validator.
+Используйте следующую команду, но измените `сумму` на любой имеющийся у Вас баланс. Помните, что это на самом деле деноминировано в `uaxl`. Также измените `moniker` чтобы задать псевдонимом для Вашего валидатора.
 
 ```bash
 axelard tx staking create-validator --yes \
@@ -183,32 +182,32 @@ axelard tx staking create-validator --yes \
 -b block
 ```
 
-To check how many coins your validator has currently staked.
+Чтобы проверить, сколько монет Ваш валидатор в настоящее время застейкал, запустите.
 ```bash
 axelard q staking validator "$(axelard keys show validator --bech val -a)" | grep tokens
 ```
 
-If you wish to stake more coins after the initial validator creation.
+Если Вы хотите внести больше монет после первоначального создания валидатора.
 ```bash
 axelard tx staking delegate {axelarvaloper address} {amount} --from validator -y
 ```
 
-eg)
+т.е)
 
 ```bash
 axelard tx staking delegate "$(axelard keys show validator --bech val -a)" "100000000uaxl" --from validator -y
 ```
 
-4. Register the broadcaster account as a proxy for your validator. Axelar network propagates messages from threshold multi-party computation protocols via the underlying consensus. The messages are signed and delivered via the blockchain.
+4. Зарегистрируйте учетную запись broadcaster в качестве прокси для Вашего валидатора.  Сеть Axelar распространяет сообщения от пороговых протоколов многосторонних вычислений через базовый консенсус. Сообщения подписываются и доставляются через блокчейн.
 
-Open a new terminal and run the ./join/launch-validator.sh script using the same parameters as before. Do NOT use the --reset-chain flag or your node will have to sync again from the beginning. The output should be something like this.
+Откройте новый терминал и запустите ./join/launch-validator.sh скрипт используя те же параметры, что и раньше. НЕ используйте --reset-chain флаг или вашему узлу придется снова синхронизироваться с самого начала. Вывод должен быть примерно таким.
 
 ```bash
 Tofnd & Vald running.
 
 Proxy address: axelar1xg93jnefgz3gsnuyqrmq2q288z8st3cf43jecs
 
-To become a validator get some uaxl tokens from the faucet and stake them
+Чтобы стать валидатором, возьмите несколько токенов uaxl из крана и застейкайте их.
 
 
 - name: broadcaster
@@ -220,192 +219,192 @@ To become a validator get some uaxl tokens from the faucet and stake them
   pubkeys: []
 
 
-**Important** write this mnemonic phrase in a safe place.
-It is the only way to recover your account if you ever forget your password.
+**Важно** запишите эту мнемоник фразу в надежном месте.
+Это единственный способ восстановить Вашу учетную запись, если Вы когда-нибудь забудете свой пароль.
 
 admit come proud swear view stomach industry elephant extend bracket reveal dinner july absorb beef stick say pact sick
-Do not forget to also backup the tofnd mnemonic (/Users/talalashraf/.tofnd/export)
+Не забудьте также сделать резервную копию мнемоник фразы tofnd (/Users/talalashraf/.tofnd/export)
 
-To follow tofnd execution, run 'docker logs -f tofnd'
-To follow vald execution, run 'docker logs -f vald'
-To stop tofnd, run 'docker stop tofnd'
-To stop vald, run 'docker stop vald'
+Чтобы следить за выполнением tofnd, запустите 'docker logs -f tofnd'
+Чтобы следить за выполнением vald, запустите 'docker logs -f vald'
+Для остановки tofnd, запустите 'docker stop tofnd'
+Для остановки vald, запустите 'docker stop vald'
 ```
 
-Then go to [Axelar faucet](http://faucet.testnet.axelar.dev/) and get some coins on your `broadcaster` address.
+Затем перейдите на страницу [Axelar крана](http://faucet.testnet.axelar.dev/) и получи монеты на свой `broadcaster` адрес.
 
-Enter Axelar node CLI:
+Перейдите в командную строку узла Axelar:
 ```bash
 docker exec -it axelar-core sh
 ```
-Check that you received the funds:
+Убедитесь, что Вы получили средства:
 ```bash
 axelard q bank balances {broadcaster address}
 ```
-eg)
+т.е)
 
 ```bash
 axelard q bank balances axelar1xg93jnefgz3gsnuyqrmq2q288z8st3cf43jecs
 ```
 
-Use the proxy address from above to register the broadcaster account as a proxy for your validator.
+Используйте указанный Выше прокси-адрес, чтобы зарегистрировать учетную запись broadcaster в качестве прокси для Вашего валидатора.
 
 ```bash
 axelard tx snapshot register-proxy [proxy address] [flags]
 ```
 
-eg)
+т.е)
 
 ```bash
 axelard tx snapshot register-proxy axelar1xg93jnefgz3gsnuyqrmq2q288z8st3cf43jecs --from validator -y
 ```
 
-5. Check that your node's `vald` and `tofnd` are connected properly. As a validator, your `axelar-core` will talk with your `tofnd` through `vald`. This is important when events such as key rotation happens on the network.
+5. Убедитесь, что Ваш узел `vald` и `tofnd` подключены правильно. В качестве валидатора Вы `axelar-core` свяжитесь с `tofnd` через `vald`. Это важно, когда в сети происходят такие события, как ротация ключей.
 
-First, check that the vald container is running. Run the following commands in a new terminal.
+Во-первых, убедитесь, что контейнер vald запущен. Запустите следующие команды в новом окне терминала.
 
 ```bash
 docker ps
 ```
 
-Look for a container called `vald`.
+Найдите контейнер с именем `vald`.
 
-Now exec into the vald container and ensure that it can communicate tofnd
+Теперь выполните команду в контейнере vald и убедитесь, что он может взаимодействовать с tofnd.
 
 ```bash
 docker exec -ti vald sh
 ```
 
-From inside the container run
+Внутри контейнера запустите
 ```bash
 axelard tofnd-ping --tofnd-host tofnd
 ```
 
-If you see a response like `PONG!` , then your `vald` container has successfully started and connected with `tofnd`.
+Если вы видите ответ вроде `PONG!` , это значит что `vald` контейнер успешно запущен и подключен к `tofnd`.
 
 
-6. Find the minimum amount of coins you need to stake.
+6. Найдите минимальное количество монет, которое Вам нужно застейкать.
 
-To become a full-fledged validator that participates in threshold multi-party signatures, your validator needs to stake at least 2% or 1/50 of the total staking pool.
+Чтобы стать полноценным валидатором, который участвует в пороговых многосторонних подписях, Ваш валидатор должен делать ставки не менее 2% или 1/50 от общего стейкинг пула.
 
-Go into the Axelar discord server and find the `testnet` channel. Open up the `pinned` messages at the top right corner and scroll down to the very first pinned message, which contains many links. Find the link for `Monitoring` as well as the testnet user login credentials and use it to sign in.
+Зайдите на дискорд-сервер Axelar и найдите канал `testnet`. Откройте `pinned` сообщения в правом верхнем углу и прокрутите вниз до самого первого закрепленного сообщения, который содержит много ссылок. Найдите ссылку `Мониторинг` а также учетные данные пользователя тестовой сети и используйте ее для входа.
 
-Once you are signed in to the monitoring dashboard, look for an entry called `Bonded Tokens`. This is the total pool of staked tokens in the network, denominated in `axl`. However, later when you use the CLI, it actually accepts denominations in micro `axl` (`uaxl`) where 1 `axl` = 1,000,000 `uaxl`.
+После того, как Вы вошли в панель мониторинга, найдите запись под названием `Bonded токены`. Это общий пул застейканных токенов в сети, деноминированный в `axl`. Однако позже, когда вы используете CLI, он фактически принимает номиналы в микро `axl` (`uaxl`) где 1 `axl` = 1,000,000 `uaxl`.
 
-So to find the minimum amount of coins you need to stake in the next step, calculate `{total pool} * 1000000 / 50`.
+Итак, чтобы найти минимальное количество монет, которое Вам нужно застейкать на следующем шаге, рассчитайте `{total pool} * 1000000 / 50`.
 
-eg)
-If the dashboard displays `3k` `Bonded Tokens`, the minimum amount is `3000 * 1000000 / 50 = 60000000`.
+т.е)
+Если на панели инструментов отображается `3k` `Bonded токенов`, минимальная сумма `3000 * 1000000 / 50 = 60000000`.
 
-:warning: **Important:** Key shares for signing transactions on other chains are distributed proportionally to the validators' stakes on Axelar. In order to keep the number of key shares low for now, please delegate a similar amount of stake as existing validators have, i.e. `100000000uaxl`.
+:предупреждение: **Важно**: ключевые доли для подписания транзакций в других цепочках распределяются пропорционально долям валидаторов на Axelar. Чтобы пока сохранить количество ключевых акций на низком уровне,, пожалуйста, делегируйте ту же сумму стейка, что и у существующих валидаторов, т.е. `100000000uaxl`.
 
-7. Ping the Axelar team in the testnet channel to ask for more tokens. The Faucet will not be able to give you the required amount of tokens so the team will manually send them to your address. The team will want to verify that your validator is setup correctly and will send additional funds to your wallet. Once you have confirmation from the team that you have additional funds to stake, check that they are in your wallet and stake them.
+7. Попросите команду Axelar в канале тестовой сети, чтобы запросить дополнительные токены. Кран не сможет дать Вам необходимое количество токенов, поэтому команда вручную отправит их на Ваш адрес. Команда захочет убедиться, что Ваш валидатор настроен правильно, и отправит дополнительные средства на Ваш кошелек. Как только Вы получите подтверждение от команды о том, что у Вас есть дополнительные средства для ставки, убедитесь, что они находятся в Вашем кошельке, и сделайте ставку.
 
 ```bash
 axelard tx staking delegate {axelarvaloper address} {amount} --from validator -y
 ```
 
-eg)
+т.е)
 
 ```bash
 axelard tx staking delegate "$(axelard keys show validator --bech val -a)" "100000000uaxl" --from validator -y
 ```
-### **Important: Post-Setup Checklist**
+### **Важно: Контрольный список после установки**
 
-Check that:
+Проверьте это:
 
-1. All three containers are running (`axelar-core`, `vald`, and `tofnd`).
-2. You can ping (see `tofnd-ping` above) `tofnd` from `vald` container.
-3. Your external nodes (Bitcoin, Ethereum, etc) are running and correctly expose the endpoints.
-4. You backed-up your mnemonics following [this manual](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/validator-backup.md)
-5. After the team gives you enough stake and confirms that rotations are complete, you can explore various shares you hold following [this](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/validator-extra-commands.md).
-6. A reminder that you need at least `1 axl` to participate in consensus, and at least `2\%` of total bonded stake to participate in threshold MPC.
-7. Check that you have some `uaxl` on your `broadcaster` address. Use [Axelar faucet](http://faucet.testnet.axelar.dev/) to get some coins if it is not funded.
-8. After that, you're an active validator and should guard your node and all keys with care.
+1. Все три контейнера запущены (`axelar-core`, `vald`, and `tofnd`).
+2. Вы можете проверить доступность (смтори `tofnd-ping` выше) `tofnd` от `vald` контейнера.
+3. Ваши внешние узлы (Биткойн, Эфириум и т. д.) работают и правильно отображают конечные точки.
+4. Вы сделали резервную копию своих мнемоник фраз [руководство](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/validator-backup.md)
+5. После того, как команда предоставит Вам достаточную долю и подтвердит, что ротация завершена, Вы можете изучить различные доли, которые у Вас есть, после [здесь](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/validator-extra-commands.md).
+6. Напоминание о том, что Вам нужно как минимум `1 axl` участвовать в консенсусе и, по крайней мере, `2\%` от общей суммы залогового пакета для участия в пороговом MPC.
+7. Проверьте, есть ли у Вас некоторые `uaxl` на Вашем `broadcaster` адрес. Используйте [Axelar кран](http://faucet.testnet.axelar.dev/) чтобы получить несколько монет, если он не финансируется.
+8. После этого Вы становитесь активным валидатором и должны тщательно охранять свою ноду и все ключи.
 
-### Start-up troubleshoot
+### Устранение неполадок при запуске
 
-If the process was missing, check if `tofnd` is running. Install the `nmap` command if you do not have it, and check the tofnd port
+Если процесс отсутствует, проверьте, запущен ли `tofnd`. Установите `nmap` утилиту, если у Вас ее нет, и проверьте порт tofnd
 
 ```bash
 nmap -p 50051 localhost
 ```
 
-Look for the `STATE` of the port, which should be `open` or `closed`. If the port is `closed`, restart your node and ensure tofnd is running. If the port is `open`, then there is a connection issue between vald and tofnd.
+Ищите `STATE` порта, который должен быть `открыт` или `закрыт`. Если порт `закрыт`, перезапустите узел и убедитесь, что tofnd запущен. Если порт `открыт`, тогда возникает проблема с соединением между vald и tofnd.
 
-To fix the connectivity issue, find the `tofnd` container address manually and provide it to `vald`.
-Find the `tofnd` address.
+Чтобы решить проблему с подключением, найдите адрес контейнера `tofnd` вручную и сообщите его `vald`.
+Найдите адрес `tofnd`.
 
 ```bash
 docker inspect tofnd
 ```
 
-Near the bottom of the JSON output, look for `Networks`, then `bridge`, `IPAddress`, and copy the address listed.
-Next, ping the IP Address from inside `Axelar Core` to see if it works. Install the `ping` command if it does not exist already.
+В нижней части вывода JSON найдите `Сети`, затем `мост`, `IP-адрес` и скопируйте указанный адрес.
+Затем пропингуйте IP-адрес изнутри `Axelar Core`, чтобы проверить, работает ли он. Установите утилиту `ping`, если она отсутсвует.
 
 ```bash
-docker exec axelar-core ping {your tofnd IP Address}
+docker exec axelar-core ping {Ваш tofnd IP адрес}
 ```
 
-eg)
+т.е)
 
 ```bash
 docker exec axelar-core ping 172.17.0.2
 ```
 
-You should see entries starting to appear one by one if the connection succeeded. Stop the ping with `Control + C`.
-Save this IP address.
+Вы должны увидеть, что записи начинают появляться одна за другой, если соединение установлено успешно. Остановить пинг с помощью `Control + C`.
+Сохраните этот IP адрес.
 
-Next, query your validator address with
+Затем запросите свой адрес валидатора с помощью
 
 ```bash
 docker exec axelar-core axelard keys show validator --bech val -a
 ```
-:::caution
-Make sure the validator address that is returned starts with `axelarvaloper`
+:::Внимание
+Убедитесь, что возвращаемый адрес валидатора начинается с `axelarvaloper`.
 :::
 
-Now, start `vald`, providing the IP address and validator address:
+Теперь запустите `vald`, указав IP-адрес и адрес валидатора:
 
 ```bash
 docker exec axelar-core axelard vald-start --tofnd-host {your tofnd IP Address} --validator-addr {your validator address} --node {your axelar-core IP address}
 ```
-eg)
+т.е)
 ```bash
 docker exec axelar-core axelard vald-start --tofnd-host 172.17.0.2 --validator-addr axelarvaloper1y4vplrpdaqplje8q4p4j32t3cqqmea9830umwl
 ```
 
 
 
-Your vald should be connected properly. Confirm this by running the following and looking for an `vald-start` entry.
+Ваш vald должен быть правильно подключен. Подтвердите это, выполнив следующее и найдя запись `vald-start`.
 ```bash
 docker exec axelar-core ps
 ```
 
 
-Your node is now a validator! Stay as a validator and keep your node running for at least a day. If you wish to stop being a validator, follow the instructions in the next section.
+Ваш узел теперь является валидатором! Оставайтесь валидатором и поддерживайте работу своего узла хотя бы день. Если Вы хотите перестать быть валидатором, следуйте инструкциям в следующем разделе.
 
 
-## Leaving the Network as a Validator
+## Выход из сети в качестве валидатора
 
-1. Deactivate your broadcaster account.
+1. Деактивируйте свою учетную запись broadcast.
 ```bash
 axelard tx snapshot deactivate-proxy --from validator -y -b block
 ```
 
-2. Wait until the next key rotation for the changes to take place. In this release, we're triggering key rotation about once a day. So come back in 24 hours, and continue to the next step. If you still get an error after 24 hours, reach out to a team member.
+2. Дождитесь следующего поворота ключа, чтобы изменения вступили в силу. В этом выпуске мы запускаем ротацию ключей примерно раз в день. Так что возвращайтесь через 24 часа и переходите к следующему шагу. Если Вы по-прежнему получаете сообщение об ошибке через 24 часа, обратитесь к члену команды.
 
-3. Release your staked coins.
+3. Отпустите застейканные монеты.
 ```bash
 axelard tx staking unbond {axelarvaloper address} {amount} --from validator -y -b block
 ```
 
-eg)
+т.е)
 
 ```bash
 axelard tx staking unbond "$(axelard keys show validator --bech val -a)" "100000000uaxl" --from validator -y -b block
 ```
 
-`amount` refers to how many coins you wish to remove from the stake. You can change the amount.
+`amount` относится к тому, сколько монет Вы хотите снять со ставки. Вы можете изменить сумму.
 
-To preserve network stability, the staked coins are held for roughly 1 day starting from the unbond request before being unlocked and returned to the `validator` account.
+Чтобы сохранить стабильность сети, застейканые монеты удерживаются примерно в течение 1 дня, начиная с запроса на отмену привязки, прежде чем они будут разблокированы и возвращены на учетную запись `Валидатора`.
