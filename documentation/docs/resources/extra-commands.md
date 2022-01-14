@@ -1,103 +1,103 @@
-# Extra Commands
+# Дополнительные команды
 -------
-Extra commands to query Axelar network's internal state. For those interested in learning more.
+Дополнительные команды для запроса внутреннего состояния сети Axelar. Для тех, кто хочет узнать больше.
 
-## Disclaimer
-!> :fire: Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+## Отказ от отвественности
+!> :fire: Axelar Network находится в стадии разработки. Ни в коем случае Вы не должны передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять. Axelar не несет ответственности за какие-либо активы, потерянные, замороженные или невозвратные в любом состоянии или состоянии. Если Вы обнаружите проблему, отправьте ее в этот репозиторий, следуя шаблону.
 
 
-## Prerequisites
-- Complete all steps from [Setup with Docker](/setup/setup-with-docker.md) or [Setup with Binaries](/setup/setup-with-binaries.md)
-- Attempted or completed some exercises and have a basic understanding of the asset transfer workflow
+## Предварительные требования
+- Завершите все шаги согласно руководству [Установки с помощью Docker](/setup/setup-with-docker.md) или [Установки с помощью бинарного файла](/setup/setup-with-binaries.md)
+- Попытались или выполнили некоторые упражнения и получили базовое представление о рабочем процессе передачи активов.
 
-## Commands
-This document lists out additional commands that can be run at different points during the exercises. The commands are not neccesary to complete the asset transfer, but display additional information about the current network state, and can be useful for debugging or learning more about the network.
+## Команды
+В этом документе перечислены дополнительные команды, которые можно запускать в разные моменты выполнения упражнений. Команды не нужны для завершения передачи актива, но отображают дополнительную информацию о текущем состоянии сети и могут быть полезны для отладки или получения дополнительных сведений о сети.
 
-Note: If you setup your node using the binaries, you should always include `--home $ROOT_DIRECTORY/.core` param in your `axelard` commands, where `ROOT_DIRECTORY` is whatever you chose when setting up the node. The default value for this is `$HOME/.axelar_testnet/.core`. e.g
+Примечание. Если вы настраиваете свой узел с помощью двоичных файлов, Вы всегда должны включать параметр `--home $ROOT_DIRECTORY/.core` с командой `axelard`, где `ROOT_DIRECTORY` это то, что Вы выберете при настройке узла. Значение по умолчанию для этого `$HOME/.axelar_testnet/.core`. т.е
 ```bash
 axelard q bank balances <addr>
 ```
 
-becomes
+становится
 ```bash
 axelard q bank balances <addr> --home $HOME/.axelar_testnet/.core
 ```
 
 
-### Query Ethereum Gateway Address
+### Запрос адреса шлюза Ethereum
 ```bash
 axelard q evm gateway-address ethereum
 ```
 
-Returns the ethereum address of the deployed Axelar Gateway contract. The Gateway acts as the Axelar hub on ethereum. It manages and deploys ERC20 token contracts which represents assets from other chains, such as bitcoin.
+Возвращает эфириум-адрес развернутого контракта Axelar Gateway. Шлюз действует как хаб Axelar на Эфириуме. Он управляет и развертывает контракты токенов ERC20, которые представляют активы из других цепочек, таких как биткойн.
 
 
-### Query Ethereum Token Address
+### Запрос адреса токена Ethereum
 ```bash
 axelard q evm token-address ethereum [asset denomination]
 ```
-eg:
+т.е:
 
 ```bash
 axelard q evm token-address ethereum satoshi
 ```
 
-Returns the ethereum address of the deployed ERC20 token contract, which represents an asset from another chain.
+Возвращает адрес эфириума развернутого контракта токена ERC20, который представляет собой актив из другой цепочки.
 
 
-### Query Bitcoin Minimum Withdraw Balance
+### Запрос минимального баланса вывода биткойнов
 ```bash
 axelard q bitcoin min-output-amount
 ```
 
-Returns the minimum amount of bitcoin that can be withdrawn, denominated in satoshi. Withdraw refers to the process of depositing the ERC20 axelarBTC token on ethereum, and getting BTC back on a bitcoin recipient address. If a Bitcoin outpoint value is below Bitcoin's dust amount the transaction is not going to be mined, therefore we enforce this minimum.
+Возвращает минимальную сумму биткойнов, которую можно вывести, номинированную в сатоши. Снятие относится к процессу внесения токена ERC20 axelarBTC в эфириум и возврата BTC на адрес получателя биткойнов. Если значение точки вывода биткойнов ниже количества минимального значения биткойнов, транзакция не будет одобрена, поэтому мы применяем этот минимум.
 
 
-### Query the Last Consolidation Transaction
+### Запросить последнюю транзакцию консолидации
 ```bash
 axelard q bitcoin latest-tx [key role]
 ```
-eg:
+т.е:
 
 ```bash
 axelard q bitcoin latest-tx master
 ```
 
-Returns the latest consolidation transaction for the given key role. This transaction consolidates all deposits on the axelar network and pays out any outstanding withdrawal requests.
+Возвращает последнюю транзакцию консолидации для данной ключевой роли. Эта транзакция объединяет все депозиты в сети Axelar и выплачивает все непогашенные запросы на снятие средств.
 
 
-### Query the Deposit Address for a Linked Recipient Address
-For a bitcoin deposit address and ethereum recipient address:
+### Запрос адреса депозита для связанного адреса получателя
+Для адреса депозита биткойнов и адреса получателя ethereum:
 ```bash
 axelard q bitcoin deposit-address [recipient chain] [recipient address]
 ```
-eg:
+т.е:
 
 ```bash
 axelard q bitcoin deposit-address ethereum 0xc1c0c8D2131cC866834C6382096EaDFEf1af2F52
 ```
 
-For an ethereum deposit address and bitcoin recipient address:
+Для адреса депозита эфириума и адреса получателя биткойнов:
 ```bash
 axelard q evm deposit-address ethereum [recipient chain] [recipient address] [asset denomination]
 ```
-eg:
+т.е:
 
 ```bash
 axelard q evm deposit-address ethereum bitcoin tb1qg2z5jatp22zg7wyhpthhgwvn0un05mdwmqgjln satoshi
 ```
 
-Returns the native chain deposit address for a linked, cross chain recipient adress. Axelar must have previously linked the two addresses.
+Возвращает адрес депозита в собственной цепочке для связанного адреса получателя в другой цепочке. Axelar должен был предварительно связать два адреса.
 
 
-### Query the State of a Bitcoin Deposit Transaction
+### Запрос состояния транзакции депозита биткойнов
 ```bash
 axelard q bitcoin deposit-status [txID:vout]
 ```
-eg:
+т.е:
 
 ```bash
 axelard q bitcoin deposit-status 615df0b4d5053630d24bdd7661a13bea28af8bc1eb0e10068d39b4f4f9b6082d:0
 ```
 
-Returns the state of the deposit transaction (whether its been confirmed on bitcoin) as seen by Axelar network.
+Возвращает состояние депозитной транзакции (подтверждена ли она в биткойнах) с точки зрения сети Axelar.
