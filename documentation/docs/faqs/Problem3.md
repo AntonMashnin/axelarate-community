@@ -1,13 +1,13 @@
-# c2d2cli container gives an invalid IP Address error
+# c2d2cli контейнер выдает ошибку некоректного IP-адреса
 
-## Problem 
-When running c2d2cli, docker gives an invalid IP Address error.
+## Проблема 
+При запуске c2d2cli докер выдает ошибку некоректного IP-адреса.
 ```bash
 ~/axelar/axelarate-community$ ./c2d2/c2d2cli.sh --version v0.3.0 Copying config.toml to /home/mirrormirage0/.c2d2cli docker: Error response from daemon: invalid IP address in add-host: "host-gateway". See 'docker run --help'
 ```
 
-## Cause
-Docker version is outdated
+## Прична
+Версия Docker(а) устарела
 
-## Solution
-Update docker to version 20 or higher
+## Решение
+Обновите докер до версии 20 или выше
