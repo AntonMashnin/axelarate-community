@@ -5,26 +5,26 @@ sidebar_label: Upgrade to v0.8.5
 slug: /upgrade-v0.8.5
 ---
 
-# How to upgrade your node to v0.8.5
+# Как обновить узел до версии 0.8.5
 
-:::warning
-Please perform this upgrade process sometime before 14:30 UTC on Friday, 2021-nov-26.
+:::предупреждение
+Пожалуйста, выполните этот процесс обновления до 14:30 UTC пятницы, 26 ноября 2021 года.
 
-After that time, nodes running any version of axelar-core prior to v0.8.5 will fall out of consensus with testnet.
+По истечении этого времени узлы, на которых запущена любая версия axelar-core до версии 0.8.5, перестанут быть согласованы с тестовой сетью.
 :::
 
-Checkout verion 0.7.7 of axelarate-community.  In your local axelarate-community repo:
+Проверить версию 0.7.7 of axelarate-community.  В Вашем локальном axelarate-community репозитории:
 ```
 git pull
 git checkout v0.7.7
 ```
 
-:::note
-All terminal commands in this document should be run in your local axelarate-community repo.
+:::Примечание
+Все команды терминала в этом документе должны выполняться в вашем локальном репозитории axelarate-community.
 :::
 ## Docker
 
-### Ordinary (non-validator) nodes
+### Обычные (не валидаторные) узлы
 
 TL;DR
 ```
@@ -33,9 +33,9 @@ cp -r ~/.axelar_testnet ~/.axelar_testnet_backup
 ./join/join-testnet.sh --axelar-core v0.8.5
 ```
 
-Upgrade is very simple---just restart your node.  The `cp` command above creates a backup copy of your testnet data.  If something goes wrong then you can restore your node's state from the backup.
+Обновление очень просто ---just перезапустите Вашу ноду.  Приведенная Выше команда `cp` создает резервную копию данных Вашей тестовой сети. Если что-то пойдет не так, Вы сможете восстановить состояние Вашего узла из резервной копии.
 
-### Validator nodes
+### Узлы валидатора
 
 TL;DR
 ```
@@ -45,11 +45,11 @@ cp -r ~/.axelar_testnet ~/.axelar_testnet_backup
 ./join/launch-validator-tools.sh --axelar-core v0.8.5
 ```
 
-Like upgrading a non-validator node---just restart your node.  As above, the `cp` command creates a backup copy of your testnet data in case something goes wrong.
+Как обновление не-валидатор ноды ---just перезапустите свой узел.  Как и выше, команда `cp` создает резервную копию данных Вашей тестовой сети на случай, если что-то пойдет не так.
 
-## Binaries
+## Исходный код
 
-### Ordinary (non-validator) nodes
+### Обычные (не валидаторные) узлы
 
 TL;DR
 ```
@@ -58,9 +58,9 @@ cp -r ~/.axelar_testnet ~/.axelar_testnet_backup
 ./join/join-testnet-with-binaries.sh --axelar-core v0.8.5
 ```
 
-As with docker, the `cp` command creates a backup copy of your testnet data in case something goes wrong.
+Как и в случае с докером, команда `cp` создает резервную копию данных Вашей тестовой сети на случай, если что-то пойдет не так.
 
-### Validator nodes
+### Ноды Валидатора
 
 TL;DR
 ```
@@ -72,11 +72,11 @@ cp -r ~/.axelar_testnet ~/.axelar_testnet_backup
 ./join/launch-validator-tools-with-binaries.sh --axelar-core v0.8.5
 ```
 
-As with docker, the `cp` command creates a backup copy of your testnet data in case something goes wrong.
+Как и в случае с докером, команда `cp` создает резервную копию данных Вашей тестовой сети на случай, если что-то пойдет не так.
 
-## Validators: restore healthy status
+## Валидаторы: восстановление работоспособного состояния
 
-It is likely that the above process will cause your validator node will miss a few blocks.
+Вполне вероятно, что описанный выше процесс приведет к тому, что Ваш узел валидатора пропустит несколько блоков.
 
-* If you miss 6 or more of the last 100 blocks then your status is `missed_too_many_blocks`---see [Missed too many blocks](/validator-zone/troubleshoot/missed-too-many-blocks).
-* If you miss 50 or more of the last 100 blocks then your status is `jailed`---see [Unjail](/validator-zone/troubleshoot/unjail) for instructions on how to fix this condition.
+* Если вы пропустите 6 или более из последних 100 блоков, Ваш статус `missed_too_many_blocks`---see [Пропущено слишком много блоков](/validator-zone/troubleshoot/missed-too-many-blocks).
+* Если Вы пропустите 50 или более из последних 100 блоков, Ваш статус `jailed`---see [Unjail](/validator-zone/troubleshoot/unjail) для получения инструкций о том, как исправить это условие.
