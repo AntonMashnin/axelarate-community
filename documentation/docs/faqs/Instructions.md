@@ -1,24 +1,24 @@
-# Checklist to ask for help
+# Контрольный список, чтобы попросить о помощи
 
-## Instructions
+## Инструкция
 
-When asking for help, communicate your setup and the problem succinctly but thoroughly. Use the following template: 
+Обращаясь за помощью, сообщайте о своих настройках и проблеме кратко, но подробно. Используйте следующий шаблон:
 
-- Github commit you're running (run git status from the axelarate-community directory and add the output to your request - should be on main branch). Make sure you’re always on the latest.  
-- Check your node blockheight & compare with the output in the dashboards to make sure you’re synced up
+- Коммит Github, который вы выполняете (запустите git status из каталога axelarate-community и добавьте вывод в свой запрос — он должен быть в основной ветке). Убедитесь, что Вы всегда в курсе последних новостей.
+- Проверьте высоту последний блок на Вашем узле и сравните с выводом в информационной панели, чтобы убедиться, что Вы синхронизированы.
 ```bash
 curl localhost:26657/status | jq '.result.sync_info'
 ```
-- Make sure you're running the correct versions of software, check [here](/resources/testnet-releases.md) for the latest software releases and addresses
+- Убедитесь, что Вы используете правильные версии программного обеспечения, проверьте [здесь](/resources/testnet-releases.md) последнии версии программного обеспечения и адреса
 
-## Other interesting info that will help troubleshooting: 
+## Другая интересная информация, которая поможет устранить неполадки:
 
-- Exercise number and exact step where you face the issue 
-- OS version: run cat /etc/os-release and post the output in your request 
-- Docker version: docker version and post the output in your request - Your server setup (docker, separate/shared/dockerized ETH/BTC RPC nodes, etc.)
-- Relevant addresses to the issue:
-     - BTC address on Axelar 
-     - ETH address on Axelar 
-     - ETH wallet address (destination) 
-     - BTC wallet address (destination) 
-     - A link to the TX hash of the transaction where you experience the issue, etc.  
+- Номер упражнения и точный шаг, на котором Вы сталкиваетесь с проблемой
+- Версия операционной системы: запустите cat /etc/os-release и опубликуйте вывод в своем запросе
+- Docker версия: версию докера и опубликуйте вывод в своем запросе - Настройка Вашего сервера (docker, отдельный/общий/dockerized ETH/BTC RPC ноды, и т.д.)
+- Адреса относящийся к проблеме:
+     - BTC адрес в Axelar 
+     - ETH адрес в Axelar 
+     - ETH адрес кошелька (адрес назначения) 
+     - BTC адрес кошелька (адрес назначения) 
+     - Ссылка на хэш TX транзакции, в которой возникла проблема, и т. д.  
