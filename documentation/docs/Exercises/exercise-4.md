@@ -1,40 +1,40 @@
-# Exercise 4
-Transfer UST from Terra to EVM compatible chains via Terra CLI and Axelar Network CLI
+# Упражнение 4
+Перенос UST из Terra в EVM-совместимые цепочки через Terra CLI и Axelar Network CLI
 
-## Level
-Intermediate
+## Уровень
+Средний
 
-## Disclaimer
-!> :fire: Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+## Отказ от отвественности
+!> :fire: Axelar Network находится в стадии разработки. Ни в коем случае Вы не должны передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять. Axelar не несет ответственности за какие-либо активы, потерянные, замороженные или невозвратные в любом состоянии или состоянии. Если Вы обнаружите проблему, отправьте ее в этот репозиторий, следуя шаблону.
 
 
-## Prerequisites
-- Complete all steps from [Setup with Docker](/setup/setup-with-docker.md) or [Setup with Binaries](/setup/setup-with-binaries.md)
-- Golang (Follow the [official docs](https://golang.org/doc/install) to install)
-- For Ubuntu/Debian systems: install build-essential with `apt-get install build-essential`
+## Предварительные требования
+- Выполните все шаги из руководства [Установка с помощью Docker](/setup/setup-with-docker.md) или [Установка из исходного кода](/setup/setup-with-binaries.md)
+- Golang (Следуйте [официальной документации](https://golang.org/doc/install) для выполнения установки)
+- Для Ubuntu/Debian систем: установите build-essential пакет с помощью команды `apt-get install build-essential`
 
-## Useful links
-- [Axelar faucet](http://faucet.testnet.axelar.dev/)
-- Latest docker image: https://hub.docker.com/repository/docker/axelarnet/axelar-core
+## Полезные ссылки
+- [Axelar кран](http://faucet.testnet.axelar.dev/)
+- Последняя версия docker образа: https://hub.docker.com/repository/docker/axelarnet/axelar-core
 - [Extra commands to query Axelar Network state](/resources/extra-commands.md)
 
-## Joining the Axelar testnet
+## Присоединитесь к тестовой сети Axelar
 
-Follow the instructions in [Setup with Docker](/setup/setup-with-docker.md) or [Setup with Binaries](/setup/setup-with-binaries.md) to make sure your node is up to date, and you received some test coins to your account.
+Следуйте руководству по [Установке Docker](/setup/setup-with-docker.md) или [Установка из исходного кода](/setup/setup-with-binaries.md) чтобы убедиться, что Ваш узел обновлен, и Вы получили несколько тестовых монет на свой счет.
 
-## Connect to the Terra testnet
+## Присоединитесь к Terra тестнету
 
-1. On a new terminal window, clone terra repository from Github:
+1. В новом окне терминала клонируйте репозиторий terra из Github:
 ```bash
 git clone https://github.com/terra-money/core/
 cd core
 git checkout v0.5.11
 ```
-2. Build from source
+2. Выполните установку из исходного кода
 ```bash
 make install
 ```
-3. Verify it is properly installed:
+3. Убедитесь, что он правильно установлен:
 ```bash
 terrad version --long
 ```
@@ -46,186 +46,185 @@ terrad version --long
  >source .profile
 >```
 
-4. Initialize the node
+4. Инициализация ноды
 
- [moniker] can be any name you like
+ [moniker] можете использовать любое имя, которое Вам нравится
  ```bash
 terrad init [moniker]
 ```
-5. Use any text editor to open `$HOME/.terra/config/client.toml`, edit `chain-id` and `node` fields
+5. Используйте любой текстовый редактор, чтобы открыть `$HOME/.terra/config/client.toml`, отредактируйте `chain-id` и `node` поля
 ```bash
 chain-id = "bombay-12"
 node = "tcp://adc1043f1d76249009c417dcad0bc807-1055950820.us-east-2.elb.amazonaws.com:26657"
 ```
-Verify you have access to the testnet, you will see the latest block info
+Убедитесь, что у Вас есть доступ к тестовой сети, Вы увидите последнюю информацию о блоке
 ```bash
 terrad status
  ```
-6. Create a key pair
+6. Создайте пару ключей
 
  `[terra-key-name]` can be any name you like
 ```bash
 terrad keys add [terra-key-name]
 ```
-7. Request tokens from the faucet
+7. Запросите токены через кран
 
-  - Go to terra testnet faucet and get some UST for your newly created address https://faucet.terra.money/
-  - Verify that tokens have arrived
-  - `[address]` is the address you created in step 6, associated with the [terra-key-name]
+  - Перейдите к крану terra testnet и получите немного UST для Вашего вновь созданного адреса https://faucet.terra.money/
+  - Убедитесь, что токены пришли на Ваш кошелёк
+  - `[address]` это адрес, который Вы создали на шаге 6, связанный с [terra-key-name]
  ```bash
 terrad q bank balances [address]
 ```
 
-## Instructions to send UST from Terra testnet to EVM compatible chains
-The flow works for any EVM compatible chains that Axelar supports. We use Ethereum Ropsten as example.
+## Инструкции по отправке UST из тестовой сети Terra в совместимые с EVM цепочки
+Этот процесс работает для любых цепочек, совместимых с EVM, которые поддерживает Axelar. Мы используем Ethereum Ropsten в качестве примера.
 
-> ### :bulb: Docker vs. binaries
->For the following `axelard` terminal commands:
->* **Docker:** Commands should be entered into a shell attached to the `axelar-core` container via
+> ### :bulb: Docker или. установка из исходного кода
+>Для следующих команд терминала `axelard`:
+>* **Docker:** Команды следует вводить в окружении, прикрепленное к контейнеру `axelar-core`, через
 >```
 >  docker exec -it axelar-core sh
 >```
->* **Binaries:** Commands must specify the path to the `axelard` binary and the `--home` flag.
+>* **Бинарные файлы:** Команды должны указывать путь к двоичному файлу `axelard` и флаг `--home`.
 >
->  Example: Instead of `axelard keys show validator -a` use
+>  Пример: вместо `axelard keys show validator -a` используйте
 >  ```
 >   ~/.axelar_testnet/bin/axelard keys show validator -a --home ~/.axelar_testnet/.core
 >  ```
 
-1. Create a deposit address on Axelar Network (to which you'll deposit coins later)
-using a sufficiently funded [axelar-key-name] address.
-[receipent address] is an address you control on the recipient EVM chain.
-This is where your UST will ultimately be sent.
+1. Создайте депозитный адрес в сети Axelar (на который Вы будете вносить монеты позже)
+используя достаточно финансируемый адрес [axelar-key-name].
+[адрес получателя] — это адрес, которым Вы управляете в цепочке EVM получателя.
+Именно сюда в конечном итоге будет отправлен ваш UST.
 ```bash
 axelard tx axelarnet link [evm chain] [receipent address] uusd --from [axelar-key-name]
 ```
-e.g.,
+т.е.,
 ```bash
 axelard tx axelarnet link ethereum 0x4c14944e080FbE711D29D5B261F14fE4E754f939 uusd --from validator
 ```
-Look for `successfully linked [Axelar Network deposit address] and [receipent address]`
+Вы должны увидеть `successfully linked [Axelar Network deposit address] и [receipent address]`
 
 
-> :bulb: If you get `Error: rpc error: ... not found: key not found`, verify that
-> `[axelar-key-name]` address is correct and sufficiently funded:
+> :bulb: Если Вы получите `Error: rpc error: ... not found: key not found`, проверьте это
+> `[axelar-key-name]` адрес правильный и достаточно финансируется:
 >```bash
 >axelard q bank balances [axelar-key-name]
 >```
 
-2. Send an IBC transfer from Terra testnet to Axelar Network
-Switch back to terminal with terrad installed
+2. Отправить перевод IBC из тестовой сети Terra в Axelar Network
+Вернитесь к терминалу с установленным terrad
 
  ```bash
 terrad tx ibc-transfer transfer transfer [Terra channel id] [Axelar Network deposit address] --packet-timeout-timestamp 0 --packet-timeout-height "0-20000" [amount]uusd --gas-prices 0.15uusd --from [terra-key-name] -y -b block
 ```
-You can find `Terra channel id` under [Testnet Release](/resources/testnet-releases.md)
+Вы можете найти `Terra channel id` в [Testnet релизе](/resources/testnet-releases.md)
 
- [terra-key-name] is the one you generated in step 6 above
+ [terra-key-name] это тот, который Вы создали на шаге 6 выше
 
- Wait ~30-60 secs for the relayer to relay your transaction.
+Подождите ~30-60 секунд, чтобы ретранслятор передал Вашу транзакцию.
 
-?> If your transfer is taking a long time, you can check if it timed out and was refunded on an [explorer](https://finder.terra.money/) by entering your terra address and retry the transfer.
+?> Если Ваш перевод занимает много времени, Вы можете проверить, истек ли срок его действия и был ли он возвращен на [explorer](https://finder.terra.money/) введя свой terra  адрес и повторить попытку перевода.
 
-3. Switch to axelard terminal, check that you received the funds
+3. Переключитесь в терминал Axelard, убедитесь, что Вы получили средства
 ```bash
 axelard q bank balances [Axelar Network deposit address]
 ```
-     You should see balance with denomination starting with `ibc` e.g.:
+     Вы должны увидеть баланс с номиналом, начинающимся с `ibc` e.g.:
     ```bash
     balances:
     - amount: "1000000"
      denom: ibc/6F4968A73F90CF7DE6394BF937D6DF7C7D162D74D839C13F53B41157D315E05F
     ```
 
-4. Confirm the deposit transaction
- - [txhash] is from the step 2
- - [amount] and [token] are the same as in step 2 above
- - [Axelar Network deposit address] is the address above you deposited to
-
+4. Подтвердить транзакцию депозита
+ - [txhash] это из шага 2
+ - [amount] и [token] такие же, как в шаге 2 выше
+ - [Axelar Network deposit address] это адрес Выше, на который вы отправили депозит
  ```bash
 axelard tx axelarnet confirm-deposit [txhash] [amount]"[token]" [Axelar Network deposit address] --from [axelar-key-name]
 ```
-e.g.,
+т.е.,
 ```bash
 axelard tx axelarnet confirm-deposit F72D180BD2CD80DB756494BB461DEFE93091A116D703982E91AC2418EC660752  1000000"ibc/6F4968A73F90CF7DE6394BF937D6DF7C7D162D74D839C13F53B41157D315E05F" axelar1gmwk28m33m3gfcc6kr32egf0w8g6k7fvppspue --from validator
 ```
 
-5. Create transfers on evm compatibale chain and Sign
+5. Создавайте переводы в цепочке, совместимой с evm, и подписывайте
 ```bash
 axelard tx evm create-pending-transfers [chain] --from [key-name] --gas auto --gas-adjustment 1.2
 axelard tx evm sign-commands [chain] --from [key-name] --gas auto --gas-adjustment 1.2
 ```
-e.g.
+т.е.
 ```bash
 axelard tx evm create-pending-transfers ethereum --from validator --gas auto --gas-adjustment 1.2
 axelard tx evm sign-commands ethereum --from validator --gas auto --gas-adjustment 1.2
 ```
-Look for `successfully started signing batched commands with ID {batched commands ID}`.
+Вы должны увидеть `successfully started signing batched commands with ID {batched commands ID}`.
 
-6. Get the command data that needs to be sent in an transaction in order to execute the mint
+6. Получить данные команды, которые необходимо отправить в транзакции для выполнения монетного двора
 ```bash
 axelard q evm batched-commands [chain] {batched commands ID from step 5}
 ```
-e.g.
+т.е.
 ```bash
 axelard q evm batched-commands ethereum 1d097247c283cfaca76ad1de4f3a2e5d4d075d99664e5d87aa187a331e8546e7
 ```
-Wait for `status: BATCHED_COMMANDS_STATUS_SIGNED` and copy the `execute_data`
+Дождитесь статуса `status: BATCHED_COMMANDS_STATUS_SIGNED` и скопируйте `execute_data`
 
-7. Send the transaction wrapping the command data to execute the mint
+7. Отправьте транзакцию, упаковывающую данные команды, для создания.
 
-- Open your Metamask wallet, go to Settings -> Advanced, then find Show HEX data and enable that option. This way you can send a data transaction directly with the Metamask wallet.
+- Откройте свой кошелек Metamask, перейдите в «Настройки» -> «Дополнительно»., затем найдите «Показать данные HEX» и включите эту опцию. Таким образом, Вы можете отправить транзакцию данных напрямую с кошелька Metamask.
 
-- Go to metamask, send a transaction to `Gateway smart contract address`, paste hex from `execute_data` above into Hex Data field
+- Перейти в метамаск и отправьте транзакцию на `Gateway smart contract address`, вставить шестнадцатеричный код из `execute_data` выше в поле Hex Data
 
-  Keep in mind not to transfer any tokens! To reduce the chance of out of gas errors when executing the contract, we recommend
-  setting a higher gas limit, such as 1000000, by selecting Edit on the confirmation screen.
+  Имейте в виду, не передавать никакие токены! Чтобы снизить вероятность ошибок при заключении договора, мы рекомендуем
+   установить более высокий лимит газа, например 1000000, выбрав Изменить на экране подтверждения.
 
-  (Note that the "To Address" is the address of Axelar Gateway smart contract, which you can find under [Testnet Release](/resources/testnet-releases.md))
+  (Обратите внимание, что "To Address" — это адрес смарт-контракта Axelar Gateway, который Вы можете найти в разделе [Testnet релизе](/resources/testnet-releases.md))
 
-You can now open Metamask, select "Assets", then "Import tokens", then "Custom Token",
-and paste the axelarUST token contract address (see [Testnet Release](/resources/testnet-releases.md) and look for the corresponding token address).
+Теперь вы можете открыть Metamask, выбрать "Активы", затем "Импортировать токены", затем "Пользовательский токен",
+и вставьте адрес контракта токена axelarUST (см. [Testnet Релиз](/resources/testnet-releases.md) и найдите соответствующий адрес токена).
 
 
->If you don't see the tokens in MetaMask yet,
->then verify if the transaction has succeeded on the [Ropsten explorer](https://ropsten.etherscan.io) for your [recipient address].
+>Если Вы еще не видите токены в MetaMask,
+>затем проверьте, успешно ли прошла транзакция в [Ropsten проводнике](https://ropsten.etherscan.io) для Вашего [адреса получателя].
 >Also, check that the contract executed without any errors (look under the `To:` field on the explorer for that transaction).
 
-## Send back to Terra
-1. Create a deposit address on evm compatible chain
+## Отправить обратно в Terra
+1. Создайте депозитный адрес в сети, совместимой с evm.
 ```bash
 axelard tx evm link [chain] terra [terra address] uusd --from [key-name]
 ```
-e.g.
+т.е.
 ```bash
 axelard tx evm link ethereum terra terra1syhner2ldmm7vqzkskcflaxl6wy9vn7m873vqu uusd --from validator
 ```
-Look for `successfully linked [Ethereum Ropsten deposit address] and [Terra address]`
+Вы должны увидеть `successfully linked [Ethereum Ropsten deposit address] и [Terra address]`
 
-2. External: send wrapped tokens to [Ethereum Ropsten deposit address] (e.g. with Metamask). You need to have some Ropsten testnet Ether on the address to send the transaction. Wait for 30 block confirmations. You can monitor the status of your deposit using the testnet explorer: https://ropsten.etherscan.io/
+2. Внешний: отправить упакованные токены в [Ethereum Ropsten депозит адрес] (т.е. с Metamask). Вам нужно иметь немного эфира тестовой сети Ropsten на адресе для отправки транзакции. Дождитесь 30-ти подтверждений в блокчейне. You can monitor the status of your deposit using the testnet explorer: https://ropsten.etherscan.io/
 
-3. Confirm the transaction
+3. Подтвердить транзакцию
 ```bash
 axelard tx evm confirm-erc20-deposit [chain] [txID] [amount] [deposit address] --from [key-name]
 ```
-Here, amount should be specific in uusd, 1UST = 1000000uusd
-e.g.,
+Здесь сумма должна быть указана в uusd, 1UST = 1000000uusd
+т.е.,
 ```bash
 axelard tx evm confirm-erc20-deposit ethereum 0xb82e454a273cb32ed45a435767982293c12bf099ba419badc0a728e731f5825e 1000000 0x5CFEcE3b659e657E02e31d864ef0adE028a42a8E --from validator
 ```
 
-Wait for transaction to be confirmed.
-You can search it using:
-- If using docker, `docker logs -f axelar-core 2>&1 | grep -a -e "deposit confirmation"`
-- If using the binary, `tail -f $HOME/.axelar_testnet/logs/axelard.log | grep -a -e "deposit confirmation"`
+Дождитесь подтверждения транзакции.
+Вы можете найти его, используя:
+- При использовании docker, `docker logs -f axelar-core 2>&1 | grep -a -e "deposit confirmation"`
+- При использовании бинарного файла, `tail -f $HOME/.axelar_testnet/logs/axelard.log | grep -a -e "deposit confirmation"`
 
-4. Route pending IBC transfer on Axelar Network
+4. Маршрут ожидает передачи IBC в сети Axelar
 ```bash
 axelard tx axelarnet route-ibc-transfers --from [key-name] --gas auto --gas-adjustment 1.2
 ```
-Wait ~30-60 secs for the relayer to relay your transaction.
+Подождите ~30-60 секунд, пока ретранслятор передаст Вашу транзакцию.
 
-5. Switch back to terminal with terrad installed, verify you received ust
+5. Вернитесь к терминалу с установленным terrad, убедитесь, что Вы получили ust
 
  [terra-address] is the address you used above
  ```bash
