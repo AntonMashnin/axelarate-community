@@ -1,15 +1,15 @@
-# Transaction out of gas
+# Нехватка газа для выполнения транзакции
 
-## Problem 
+## Проблема 
 ```bash
 raw_log: 'out of gas in location: ReadFlat; gasWanted: 200000, gasUsed: 200568: outof gas'
 ```
 
-## Cause
-During execution, the axelar transaction ran out of gas and could not complete
+## Причина
+Во время выполнения Axelar транзакции закончился газ, и она не была завершена.
 
-## Solution
-Please add the following flags to your command:
+## Решение
+Пожалуйста, добавьте следующие флаги в Вашу команду:
 ```bash
 --gas=auto --gas-adjustment=1.4
 ```
