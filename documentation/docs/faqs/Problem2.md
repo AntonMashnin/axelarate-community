@@ -1,12 +1,12 @@
-# /home/.axelar_testnet folder missing
+# /home/.axelar_testnet каталог пропущен
 
-## Problem
-After running `join-testnet.sh`, the `/home/.axelar_testnet` folder is missing. (Or the folder contents are out of date and unresponsive to changes)
+## Проблема
+После запуска `join-testnet.sh`, `/home/.axelar_testnet` каталог пропущен. (Или содержимое папки устарело и не реагирует на изменения)
 
-## Cause
-`join-testnet.sh` was run with sudo and the `.axelar_testnet` folder was placed under the home directory of the root user profile
+## Причина
+`join-testnet.sh` был запущен с помощью sudo и `.axelar_testnet` папка была помещена в домашний каталог корневого профиля пользователя
 
-## Solution
-Run `join-testnet.sh` with the `--root` flag to specify the `.axelar_testnet` directory.
+## Решение
+Запустите `join-testnet.sh` с флаго `--root` чтобы задать `.axelar_testnet` директорию.
 
 
