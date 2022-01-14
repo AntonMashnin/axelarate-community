@@ -1,60 +1,59 @@
 ---
 id: validator-commands
 sidebar_position: 4
-sidebar_label: Validator Extra Commands
+sidebar_label: Дополнительные команды валидатора
 slug: /validator-extra-commands
 ---
-# Validator Extra Commands
-Useful commands to query Axelar network's internal state for validators.
+# Дополнительные команды валидатора
+Полезные команды для запроса внутреннего состояния сети Axelar для валидаторов.
 
-## Disclaimer
-:::warning
-Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+## Отказ от ответственности
+:::предупреждение Axelar Network находится в стадии разработки. Ни в коем случае нельзя передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять. Axelar не несет ответственности за потерянные активы, или их заморозку или за токены которые не подлежат восстановлению в любом состоянии. Если Вы обнаружите проблему,пожалуйста, сообщите о ней используя данный репозиторий, следуя шаблону. 
 :::
 
-## Prerequisites
-- Complete all steps from [Setup with Docker](/setup-docker) or [Setup with Binaries](/setup-binaries)
-- Attempted or completed [Excercise 3](/exercises/e3) to join the network as a validator, and have a basic understanding of the workflow
+## Предварительные требования
+- Выполните все шаги из этого руководства [Установка при помощи Docker(a)](/setup-docker) или [Установка из исходного кода](/setup-binaries)
+- Попытка или завершение [Упражнение 3](/exercises/e3) чтобы присоединиться к сети в качестве валидатора и иметь общее представление о рабочем процессе
 
-## Commands
-This document lists out additional commands providing information of interest for validator nodes. The commands expose the state of validators in the network and can be useful for troubleshooting.
+## Команды
+В этом документе перечислены дополнительные команды, предоставляющие интересующую информацию для узлов валидатора. Команды отображают состояние валидаторов в сети и могут быть полезны для устранения неполадок.
 
-When running outside of docker, you will have to specify the home directory using the `--home` flag. Specially during the exercises.
+При работе вне докера вам нужно будет указать домашний каталог, используя флаг `--home`. Особенно во время обучения.
 
-### Query Your Validator Address
+### Запрос Вашего адреса Валидатора
 ```bash
 axelard keys show validator --bech val -a
 ```
 
-Returns the validator address of your node. The validator address begins with `axelarvaloper` and is used in many validator related commands.
+Возвращает адрес валидатора Вашего узла. Адрес валидатора начинается с `axelarvaloper` и используется во многих командах, связанных с валидатором.
 
 
-### Query Validator Key Shares
+### Запрос общих ключей Валидатора
 ```bash
 axelard q tss key-shares-by-validator [validator address]
 ```
-eg)
+т.е)
 
 ```bash
 axelard q tss key-shares-by-validator "$(axelard keys show validator --bech val -a)"
 ```
 
-Returns information on a list of axelar network threshold keys that the validator currently holds shares of. A validator must not hold any active key shares when they attempt to unbond and stop being a validator.
+Возвращает информацию о списке пороговых ключей сети Axelar, которые в настоящее время принадлежат валидатору. Валидатор не должен владеть какими-либо активными общими ключами, когда он пытается выполнить unbound и перестать быть валидатором.
 
 
-### Query Deregistered Validators
+### Запрос Дерегистрации Валидаторов
 ```bash
 axelard q tss deactivated-operators
 ```
 
-Returns a list of validators who are currently deregistered. Useful for confirming the success of a deregister command. Deregistered validators will not participate in future key generation events, and will not hold shares of future keys, allowing them to unbond at a later time.
+Возвращает список валидаторов, регистрация которых в настоящее время отменена. Полезно для подтверждения успешного выполнения команды для отмены регистрации. Отмененные регистрации валидаторов не будут участвовать в будущих событиях генерации ключей и не будут владеть долями будущих ключей, что позволит им отвязаться позже.
 
 
-### Query Snapshot
+### Снимок запроса
 ```bash
 axelard q snapshot info [snapshot counter]
 ```
-eg)
+т.е)
 
 ```bash
 axelard q snapshot info latest
@@ -63,12 +62,12 @@ axelard q snapshot info latest
 axelard q snapshot info 2
 ```
 
-Returns information about a snapshot given the snapshot counter number. A snapshot is taken during each keygen event to capture the state of the network's validators and how many shares of the key each validator will hold. The `latest` keyword fetches the snapshot of the most recent keygen.
+Возвращает информацию о моментальном снимке с учетом номера счетчика моментальных снимков. Моментальный снимок делается во время каждого события генерации ключей, чтобы зафиксировать состояние сетевых валидаторов и количество долей ключа, которые будет удерживать каждый валидатор. Ключевое слово `latest` извлекает снимок самого последнего кейгена.
 
 
-### Query All Validators
+### Запросить информацию о всех валидаторов
 ```bash
 axelard q snapshot validators
 ```
 
-Returns information on the status of all validators in the network.
+Возвращает информацию о состоянии всех валидаторов в сети.
