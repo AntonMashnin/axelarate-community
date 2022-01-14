@@ -1,22 +1,23 @@
-### Overview
+### Обзор
 
-This document describes the steps necessary to ensure that a validator node can backup keys in order to be able to recover their state in the future. The following data is needed to be backed up safely:
+В этом документе описываются шаги, необходимые для обеспечения того, чтобы узел валидации мог создавать резервные копии ключей, чтобы иметь возможность восстановить их состояние в будущем. Для безопасного резервного копирования необходимы следующие данные:
 
-* Tendermint validator key
-* Axelar validator mnemonic
-* Axelar proxy mnemonic
+* Ключ валидатора Tendermint
+* Axelar валидатор mnemonic
+* Axelar прокси mnemonic
 * Tofnd mnemonic
 
-For recover instructions, please see [recover](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/validator-recovery.md).
+Инструкции по восстановлению см. [восстановление](https://github.com/axelarnetwork/axelarate-community/blob/main/documentation/Admin/validator-recovery.md).
 
-### Tendermint validator key
+### Ключ валидатора Tendermint
 
-The Tendermint validator key is created when a node is launched for the first time.
-It can be found within the node's container at `c` (or on the host at `$HOME/.axelar_testnet/.core/config/priv_validator_key.json`).
+Ключ валидатора Tendermint создается при первом запуске узла.
 
-#### Key backup
+Его можно найти в контейнере узла по адресу `c` (или на хосте по адресу `$HOME/.axelar_testnet/.core/config/priv_validator_key.json`).
 
-The content of the `priv_validator_key` file should look something like:
+#### Резервное копирование ключей
+
+Содержимое файла `priv_validator_key` должно выглядеть примерно так:
 
 ```bash
 {
@@ -32,40 +33,40 @@ The content of the `priv_validator_key` file should look something like:
 }
 ```
 
-**Attention:** Be sure to store the content of this file at a safe, offline place.
+**Внимание:** Обязательно сохраните содержимое этого файла в безопасном автономном месте.
 
 ### Axelar mnemonics
 
-The Axelar mnemonics are created when an node/validator is launched for the first time and subsequently outputed to the terminal.
-The output looks something like:
+Мнемоники Axelar создаются при первом запуске узла/валидатора и впоследствии выводятся на терминал.
+Вывод выглядит примерно так:
 
 ```bash
-**Important** write this mnemonic phrase in a safe place.
-It is the only way to recover your account if you ever forget your password.
+**Важно** запишите эту мнемоническую фразу в надежном месте.
+Это единственный способ восстановить Вашу учетную запись, если Вы когда-нибудь забудете свой пароль.
 
 range elder logic subject never utility dutch novel sail vacuum model robust coin upper egg trophy track chimney garlic random fury laundry kiss sight
 ```
 
-#### Mnemonic backup
+#### Резервная копия Mnemonic
 
-There should be one mnemonic for the Axelar validator key and another for the Axelar proxy key.
-The former should be displayed after running `join/join-testnet.sh` with a clean slate, while the latter should be displayed by `join/launch-validator.sh`.
+Должн быть одна мнемоник фраза для ключа валидатора Axelar и другая для прокси-ключа Axelar.
+Первый должен отображаться после запуска `join/join-testnet.sh`, а второй должен отображаться с помощью `join/launch-validator.sh`.
 
-**Attention:** Be sure to store this mnemonic at a safe, offline place.
+**Внимание:** Обязательно сохраните эту мнемоник фразу в безопасном автономном месте.
 
 ### Tofnd mnemonic
 
-Tofnd needs to be provided with a mnemonic the first time it operates. From this mnemonic, a private key is derived and stored in tofnd's internal database. The private key is used to encrypt and decrypt the recovery information of the user.
+Tofnd должен создать и отобразить мнемоник фразу при первом запуске. Из этой фразы создается секретный ключ, который хранится во внутренней базе данных tofnd. Закрытый ключ используется для шифрования и расшифровки информации при восстановлении учётной записи пользователя.
 
-By default, a mnemonic is created when tofnd is launched for the first time. Users can use this mnenonic to recover their information in case of data loss. Once a private key is created and stored at tofnd's internal database, the mnemonic file is no longer needed.
+По умолчанию мнемоник фраза создается при первом запуске tofnd. Пользователи могут использовать эту мненоник фразу для восстановления своей информации в случае потери данных. Как только закрытый ключ создан и сохранен во внутренней базе данных tofnd, мнемонический файл больше не нужен.
 
-If you are running tofnd in a **containerized environment**, the mnemonic can be found within the tofnd container at `/.tofnd/export`, or on the mounted volume on the host machine at `$HOME/.axelar_testnet/.tofnd/export`.
+Если вы используете tofnd в **контейнерной среде**, мнемоник фразу можно найти в контейнере tofnd в `/.tofnd/export` или в смонтированном томе на хост-компьютере по адресу`$HOME/.axelar_testnet/.tofnd/export`.
 
-If you are running tofnd as a **binary**, the mnemonic can be found under the directory from which you ran the executable, at `$TOFND_PATH/.tofnd/export`.
+Если вы запускаете tofnd как **двоичный файл**, мнемоник фразу можно найти в каталоге, из которого Вы запустили исполняемый файл, по адресу `$TOFND_PATH/.tofnd/export`.
 
-The mnemonic file should look something like:
+Файл с мнемоник фразой должен выглядеть примерно так:
 ```bash
 purchase arrow sword basic gasp category hundred town layer snow mother roast digital fragile repeat monitor wrong combine awful nature damage rib skull chalk
 ```
 
-**Attention:** Be sure to store your mnemonic at a safe, offline place. After storing it, be sure it is deleted from tofnd's container or tofnd's host machine.
+**Внимание:** Обязательно храните свою мнемоник фразу в безопасном автономном месте. После сохранения убедитесь, что он удален из контейнера tofnd или хост-компьютера tofnd.
