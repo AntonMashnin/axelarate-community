@@ -1,11 +1,11 @@
-# Axelar core container fails to start
+# Основной Axelar контейнер не запускается
 
-## Problem
+## Проблема
 ```
-Axelar core container fails to start. Post "[<http://127.0.0.1:7545>](<http://127.0.0.1:7545/>)": dial tcp 127.0.0.1:7545: connect: connection refused
+Основной контейнер Axelar не запускается. Вывод "[<http://127.0.0.1:7545>](<http://127.0.0.1:7545/>)": dial tcp 127.0.0.1:7545: connect: connection refused
 ```
-## Cause
-If the `/home/.axelar_testnet` folder contains old data from a previous version of testnet, and then `join-testnet.sh` is run using the new axelar-core version.
+## Причина
+Если `/home/.axelar_testnet` папка содержит старые данные из предыдущей версии testnet, а затем запускается `join-testnet.sh`, используя новую версию ядра axelar.
 
-## Solution
-Run `join-testnet.sh` with the `--reset-chain` flag to delete the old chain data.
+## Решение
+Запустите `join-testnet.sh` с ключом `--reset-chain` флаг, чтобы удалить старые данные цепочки.
