@@ -1,4 +1,4 @@
-# Axelar Testnet Documentation
+# Axelar Testnet Документация
 
-## Get Started
-Visit [our website](https://docs.axelar.dev/) for instructions to join the network and complete exercises.
+## Начните
+Посетите [наш website](https://docs.axelar.dev/) где Вы найдёте инструкцию чтобы присоединенится к сети и начать выполнять упражнения.
