@@ -1,4 +1,4 @@
-# Testnet Exercises
+# Testnet Упражнения
 -----
 
 <!-- panels:start -->
