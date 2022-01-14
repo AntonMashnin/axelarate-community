@@ -1,16 +1,16 @@
-# Broadcaster account is not found
+# Broadcaster аккаунт не найден
 
-## Problem 
+## Проблема 
 
 ```bash
 Broadcaster account is not found. panic: failed to read broadcaster account info from keyring: The specified item could not be found in the keyring
 ```
 
-## Cause
+## Причина
 Unknown as of now
 
-## Solution
-Create the account using:
+## Решение
+Создайте учетную запись, используя:
 ```bash
 axelard keys add broadcaster
 ```
