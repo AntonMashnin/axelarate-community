@@ -1,72 +1,73 @@
-# Testnet Node Setup
-Tools to join the axelar network using binaries for mac/linux.
+# Testnet Настройка Ноды
+Инструменты для присоединения к сети Axelar с помощью двоичных файлов для Mac/Linux.
 
-This tutorial will take 30-60 minutes of dev time and 2-4 hours of waiting for blockchain sync. The tutorial includes steps for joining the axelar network using two ways. A docker based setup and a setup using binaries. As per your preference, follow the steps for one of the two options.
+Это руководство займет 30–60 минут разработки и 2–4 часа ожидания синхронизации блокчейна. Учебное пособие включает шаги для присоединения к сети Axelar двумя способами. Установка на основе докера и установка с использованием двоичных файлов. В соответствии с Вашими предпочтениями выполните шаги для одного из двух вариантов.
 
 ## Disclaimer
-!> :fire: Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
+!> :fire: Axelar Network находится в стадии разработки. Ни в коем случае Вы не должны передавать какие-либо реальные активы с помощью Axelar. Используйте только те токены тестовой сети, которые Вы не боитесь потерять. Axelar не несет ответственности за какие-либо активы, потерянные, замороженные или невозвратные в любом состоянии или состоянии. Если Вы обнаружите проблему, отправьте ее в этот репозиторий, следуя шаблону.
 
 
-## Prerequisites
+## Предварительные требования
 
-- Mac OS or Ubuntu (tested on 18.04)
-- Architectures Supported are arm64 and amd64
-- JQ command line tool (`apt-get install jq` on Ubuntu, `brew install jq` on Mac OS)
-- Minimum hardware requirements: 4 cores, 8-16GB RAM, 512 GB drive. Recommended 6-8 cores, 16-32 GB RAM, 1 TB+ drive.
+- Mac OS или Ubuntu (протестировано на версии 18.04)
+- Поддерживаемые архитектуры: arm64 и amd64
+- JQ командная строка (`apt-get install jq` на Ubuntu, `brew install jq` на Mac OS)
+- Минимальные аппаратные требования: 4 ядра, 8-16GB ОЗУ, 512 GB дискового пространства. Рекомендуемы 6-8 ядер, 16-32 GB ОЗУ, 1 TB+ дискового пространства.
 
-## Useful links
-- [Axelar faucet](http://faucet.testnet.axelar.dev/)
-- Latest docker images:
+## Полезные ссылки
+- [Axelar кран](http://faucet.testnet.axelar.dev/)
+- Последняя вресия Docker образа:
   + https://hub.docker.com/repository/docker/axelarnet/axelar-core
   + https://hub.docker.com/repository/docker/axelarnet/tofnd
 
-## Useful commands
+## Полезные команды
 
 
-Axelar will run upto three unique processes. axelar-core, vald and tofnd. If you are not running a validator, a single process for axelar-core is run. To kill these processes
+Axelar запустит до трех уникальных процессов. axelar-core, vald и tofnd. Если Вы не используете валидатор, запускается один процесс для axelar-core. Чтобы убить эти процессы
 
-For axelar-core
+Для axelar-core
 ```bash
 kill -9 $(pgrep -f 'axelard start')
 ```
 
-For vald
+Для vald
 ```bash
 kill -9 $(pgrep -f 'axelard vald-start')
 ```
 
-For tofnd
+Для tofnd
 ```bash
 kill -9 $(pgrep tofnd)
 ```
 
-## Joining the Axelar testnet
+## Присоединение к тестовой сети Axelar
 
-Clone the repository to use the scripts and configs:
+Клонируйте репозиторий, чтобы использовать скрипты и конфиги:
 
 ```bash
 git clone https://github.com/axelarnetwork/axelarate-community.git
 cd axelarate-community
 ```
 
-Checkout the correct tag so the scripts work with the deployment. Find the right tag [here](/resources/testnet-releases.md).
+Проверьте правильный тег, чтобы сценарии работали с развертыванием. Найдите правильный тег [здесь](/resources/testnet-releases.md).
 ```bash
 git checkout <release-tag>
 ```
 
 
-Determine your public IP address. [This Website can help](https://whatismyipaddress.com/). Change the `external_address` field in the `join/config.toml` file and append the rpc port.
+Определите свой внешний IP-адрес. [Этот сайт может помочь](https://whatismyipaddress.com/). Измените поле `external_address` в файле `join/config.toml` и добавьте порт rpc.
+
 ```bash
 external_address = "123.123.123.123:26656"
 ```
 
-You should have port forwarding setup with your router. We recommend forwarding ports 1317, 26656-26658 and 26660.
+У вас должна быть настроена переадресация портов на Вашем роутере. Мы рекомендуем пробросить порты 1317, 26656-26658 and 26660.
 
-Run the script `./join/join-testnet-with-binaries.sh`
+Запустите скрипт `./join/join-testnet-with-binaries.sh`
 ```log
 Usage: join-testnet-with-binaries.sh [flags]
 
-Optional flags:
+Необязательные флаги:
 -r, --root           Local directory to store testnet data in (IMPORTANT: this directory is removed and recreated if --reset-chain is set)
 --bin-directory      Local directory where the downloaded binaries are stored. Defaults to <root_directory>/bin
 --axelar-core       Version of axelar-core docker image to run (Format: vX.Y.Z) (by default latest versions are used)
@@ -75,12 +76,12 @@ Optional flags:
 --reset-chain        Delete local data to do a clean connect to the testnet (If you participated in an older version of the testnet)
 ```
 
-After running `./join/join-testnet-with-binaries.sh`, you should see the following output:
+После запуска `./join/join-testnet-with-binaries.sh`, you should see the following output:
 
 ```yaml
-Axelar node running.
+Axelar узел запущен.
 
-Validator address: axelarvaloper1ttxxytlz377agnvzqhllzxmg7dd76tnrwzyahz
+Адрес валидатора: axelarvaloper1ttxxytlz377agnvzqhllzxmg7dd76tnrwzyahz
 
 
 - name: validator
@@ -90,26 +91,26 @@ Validator address: axelarvaloper1ttxxytlz377agnvzqhllzxmg7dd76tnrwzyahz
   mnemonic: ""
 
 
-**Important** write this mnemonic phrase in a safe place.
-It is the only way to recover your account if you ever forget your password.
+**Важно** запишите эту mnemonic фразу в надежном месте.
+Это единственный способ восстановить Вашу учетную запись, если Вы когда-нибудь забудете свой пароль.
 
 naive segment sword error champion pyramid world spend tool reason sound hub barrel amazing parade ahead lamp flag disorder sunny loop artist almost expire
 
-Do not forget to also backup the tendermint key (/Users/talalashraf/.axelar_testnet/.core/config/priv_validator_key.json)
+Не забудьте также сделать резервную копию ключа tendermint (/Users/talalashraf/.axelar_testnet/.core/config/priv_validator_key.json)
 
-To follow execution, run 'tail -f /Users/talalashraf/.axelar_testnet/logs/axelard.log'
-To stop the node, run 'killall -9 "axelard"'
+Чтобы следить за выполнением, запустите 'tail -f /Users/talalashraf/.axelar_testnet/logs/axelard.log'
+Чтобы остановить узел, запустите 'killall -9 "axelard"'
 ```
 
- Wait for your node to catch up with the network before proceeding.
- Use `tail -f $HOME/axelar_testnet/logs/axelard.log` to keep an eye on the node's progress (this can take a while). Your logs will be in `ROOT_DIRECTORY/logs` where `ROOT_DIRECTORY` is whatever you passed through the flag.
+ Подождите, пока Ваш узел догонит блоки в сети, прежде чем продолжить.
+ Используйте `tail -f $HOME/axelar_testnet/logs/axelard.log` чтобы следить за прогрессом узла (это может занять некоторое время). Ваши журналы будут в `ROOT_DIRECTORY/logs` где `ROOT_DIRECTORY` это то, что Вы прошли через флаг.
 
- You can check the sync status by running:
+Вы можете проверить статус синхронизации, запустив:
  ```bash
 curl localhost:26657/status | jq '.result.sync_info'
 ```
 
-**Output:**
+**Вывод:**
  ```json
 {
   "latest_block_hash": "0B64D2A0EDAB6CEF229510E52F137130134D94AAD64EACB553D51D01B0D1A446",
@@ -123,36 +124,36 @@ curl localhost:26657/status | jq '.result.sync_info'
   "catching_up": true
 }
 ```
-Wait for `catching_up` to become `false`
+Подождите пока значение `catching_up` не станет `false`
 
-## Ethereum account on testnet
-Axelar signs meta transactions for Ethereum, meaning that any Ethereum account can send transaction executing commands so long as the commands are signed by Axelar's key. In the exercises, all of the Ethereum-related transactions are sent from address `0xE3deF8C6b7E357bf38eC701Ce631f78F2532987A` on Ropsten testnet.
+## Аккаунт Ethereum в тестовой сети
+Axelar подписывает метатранзакции для Ethereum, а это означает, что любая учетная запись Ethereum может отправлять команды выполнения транзакций, если команды подписаны ключом Axelar. В упражнениях все транзакции, связанные с Ethereum, отправляются с адреса `0xE3deF8C6b7E357bf38eC701Ce631f78F2532987A` в тестовой сети Ropsten.
 
-## Generate a key on Axelar and get test tokens
+## Сгенерируйте ключ Axelar и получите тестовые токены
 
-You can add `$HOME/.axelar_testnet/bin` to your path. The bin directory will be different depending on your root directory. Alternatively you can use the full path to run the executable as mentioned in the instructions. Set the `AXELARD_CHAIN_ID` environment variable to `axelar-testnet-barcelona`, you can run `export AXELARD_CHAIN_ID=axelar-testnet-barcelona`.
+Вы можете добавить `$HOME/.axelar_testnet/bin` в качестве пути. Каталог bin будет отличаться в зависимости от Вашего корневого каталога. В качестве альтернативы Вы можете использовать полный путь для запуска исполняемого файла, как указано в инструкциях. Установите для переменной среды `AXELARD_CHAIN_ID` значение `axelar-testnet-barcelona`, Вы можете запустить export `AXELARD_CHAIN_ID=axelar-testnet-barcelona`.
 
-1. By default, the node has an account named validator. Find its address:
+1. По умолчанию узел имеет учетную запись с именем validator. Найдите его адрес:
 ```bash
 $HOME/.axelar_testnet/bin/axelard keys show validator -a --home ~/.axelar_testnet/.core
 ```
-2. Go to axelar faucet and get some coins on your validator's address (Your node is not yet a validator for the purpose of this ceremony; it's just the name of the account). http://faucet.testnet.axelar.dev/
+2. Зайдите на кран axelar и получите монеты на адрес Вашего валидатора. (Ваша нода еще не является валидатором для целей этой церемонии; это просто имя учетной записи). http://faucet.testnet.axelar.dev/
 
-3. Check that you received the funds
+3. Убедитесь, что Вы получили средства
 ```bash
 $HOME/.axelar_testnet/bin/axelard q bank balances {output_addr_from_step_2} --home ~/.axelar_testnet/.core
 ```
-e.g:
+т.е:
 ```bash
 $HOME/.axelar_testnet/bin/axelard q bank balances axelar1hk3xagjvl4ee8lpdd736h6wcwsudrv0f5ya2we --home ~/.axelar_testnet/.core
 ```
- ?> :bulb: Balance will appear only after you are fully synced with the network
+ ?> :bulb: Баланс появится только после полной синхронизации с сетью
 
-## Stop and restart testnet
+## Остановить и перезапустить тестовую сеть
 
-To stop the node, open a new CLI terminal and run
+Чтобы остановить узел, откройте новый терминал CLI и запустите
 ```bash
 killall axelard
 ```
 
-To restart the node, run the `./join/join-testnet-with-binaries.sh` script again, with the same flags as you ran it the first time. Do NOT use the `--reset-chain` flag or your node will have to sync again from the beginning (and if you haven't backed up your keys, they will be lost).
+Чтобы перезапустить узел, запустите `./join/join-testnet-with-binaries.sh` скрипт снова с теми же флагами, что и в первый раз. НЕ используйте флаг `--reset-chain`, иначе Вашему узлу придется снова синхронизироваться с самого начала (и если Вы не сделали резервную копию своих ключей, они будут потеряны).
