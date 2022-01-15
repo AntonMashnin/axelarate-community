@@ -1,10 +1,10 @@
-# Testnet Node Setup
+# Testnet Настройка Ноды
 ---
-Tools to join the axelar network using docker images. For binaries checkout [Setup with Binaries](/setup/setup-with-binaries.md).
+Инструменты для присоединения к сети Axelar с помощью докер образов. Для установки из исходного кода посетите [Установка из исходного кода](/setup/setup-with-binaries.md).
 
-This tutorial will take 30-60 minutes of dev time and 2-4 hours of waiting for blockchain sync. The tutorial includes steps for joining the axelar network using two ways. A docker based setup and a setup using binaries. As per your preference, follow the steps for one of the two options.
+Это руководство займет 30–60 минут разработки и 2–4 часа ожидания синхронизации блокчейна.Учебное пособие включает шаги для присоединения к сети Axelar двумя способами. Установка на основе докера и установка с использованием двоичных файлов. В соответствии с Вашими предпочтениями выполните шаги для одного из двух вариантов.
 
-## Disclaimer
+## Отказ от ответственности
 
 !> :fire: Axelar Network is a work in progress. At no point in time should you transfer any real assets using Axelar. Only use testnet tokens that you're not afraid to lose. Axelar is not responsible for any assets lost, frozen, or unrecoverable in any state or condition. If you find a problem, please submit an issue to this repository following the template.
 
