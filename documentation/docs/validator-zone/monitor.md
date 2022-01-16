@@ -5,6 +5,6 @@ sidebar_label: Monitors and Alerts
 slug: /validator-zone/monitor
 ---
 
-# [TODO] Set up monitors and alerts
+# [TODO] Настройка мониторинга и оповещений
 
-What goes here?
+Что здесь происходит?
