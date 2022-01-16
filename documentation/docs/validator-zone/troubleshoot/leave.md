@@ -1,24 +1,24 @@
-# Leaving the Network as a Validator
+# Перестать быть валидатором
 -----------
 
 
 !> :fire: TODO 2 metrics: consensus bonded/active and tss bonded/active.
 
-1. Deactivate your broadcaster account.
+1. Деактивируйте свою учетную запись валидатора.
 ```bash
 axelard tx snapshot deactivate-proxy --from validator -y -b block
 ```
 
-2. Wait until the next key rotation for the changes to take place. In this release, we're triggering key rotation about once a day. So come back in 24 hours, and continue to the next step. If you still get an error after 24 hours, reach out to a team member.
+2. Дождитесь следующей ротации ключа, чтобы изменения вступили в силу. В этом релизе мы запускаем ротацию ключей примерно раз в день. Так что возвращайтесь через 24 часа и переходите к следующему шагу. Если вы по-прежнему получаете сообщение об ошибке через 24 часа, обратитесь к члену команды.
 
-3. Release your staked coins.
+3. Отпустите застейканные монеты.
 ```bash
 axelard tx staking unbond [axelarvaloper address] [amount]uaxl --from validator -y -b block
 ```
-eg:
+т.е:
 ```bash
 axelard tx staking unbond "$(axelard keys show validator --bech val -a)" 100000000uaxl --from validator -y -b block
 ```
-`amount` refers to how many coins you wish to remove from the stake. You can change the amount.
+`amount` количество монет которое Вы хотите убрать со стейкинга. Вы можете изменить сумму.
 
-To preserve network stability, the staked coins are held for roughly 1 day starting from the unbond request before being unlocked and returned to the `validator` account.
+Чтобы сохранить стабильность сети, застейканные монеты блокируются примерно на 1 день, начиная с запроса на "unstaking", прежде чем они будут разблокированы и возвращены на счет `валидатора`.
